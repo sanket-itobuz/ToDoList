@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ToDo List</title>
+    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/script.js"></script>
+  </head>
+  <body>
+    <div class="container py-4 px-3 mx-auto">
+      <h1>To-Do List Application</h1>
+      <section class="to-do-form-section">
+        <form action="#" id="form-part">
+          <div class="mb-3 task-title-part">
+            <input
+              type="text"
+              id="task-name"
+              class="form-control"
+              placeholder="Enter Task"
+              name="task-name"
+              required
+            />
+          </div>
+          <div class="mb-3 task-description-part">
+            <input
+              type="text"
+              id="task-description"
+              class="form-control"
+              placeholder="Enter Task Description"
+              name="task-description"
+            />
+          </div>
+          <div class="mb-3">
+            <input
+              type="checkbox"
+              id="important-checkbox"
+              class="form-check-input"
+              name="important-checkbox"
+            />
+            <label class="form-check-label important-checkbox-label"
+              >Mark as Important</label
+            >
+          </div>
+          <button type="submit" id="add-task-button" class="btn btn-primary">
+            Add Task
+          </button>
+        </form>
+      </section>
+
+      <br />
+      <section id="to-do-tasks">
+        <!--Task cards to feature all tasks-->
+        <div class="card task-card">
+          <div class="card-header task-importance">{Important}</div>
+          <div class="card-body task-details">
+            <h5 class="card-title task-name">{Task Title}</h5>
+            <p class="card-text task-description">{Task Description}</p>
+            <div class="task-creation-date">Date Created On:</div>
+            <div class="checkbox">
+              <input
+                type="checkbox"
+                id="important-checkbox"
+                class="form-check-input"
+                name="important-checkbox"
+              />
+              <label class="form-check-label important-checkbox-label"
+                >Mark as Completed</label
+              >
+            </div>
+            <button type="submit" class="btn btn-danger delete-button">
+              Delete
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

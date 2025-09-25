@@ -1,8 +1,64 @@
 // Import all of Bootstrap’s CSS
 @import "bootstrap/scss/bootstrap";
 
+// .to-do-form-section {
+//   position: relative;
+// }
+// #success-message {
+//   position: absolute;
+//   background-color: green;
+//   padding: 10px;
+//   border-radius: 5px;
+//   color: white;
+//   top: 30px;
+//   right: 50px;
+// }
+
+#to-do-tasks {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
 .task-card {
   margin-bottom: 20px;
+  border: none;
+  width: 20%;
+}
+@media (max-width: 1500px) {
+  .task-card {
+    height: auto;
+  }
+}
+@media (max-width: 1200px) {
+  .task-card {
+    height: auto;
+    width: 40%;
+  }
+}
+@media (max-width: 800px) {
+  #to-do-tasks {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .task-card {
+    width: 100%;
+  }
+}
+
+.task-card:hover {
+  box-shadow: 5px 5px 10px gray;
+  cursor: pointer;
+}
+.task-details {
+  background-color: rgba(249, 247, 247, 0.512);
+}
+.task-description {
+  height: 50px;
+  flex-wrap: nowrap;
+  overflow: scroll;
 }
 .delete-task {
   margin-top: 20px;
@@ -10,4 +66,56 @@
 .checkbox {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+.form-check-input {
+  margin-right: 5px;
+}
+.task-heading {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.edit-button {
+  margin-right: 8px;
+}
+.icon-left {
+  margin-left: 5px;
+}
+.icon-right {
+  margin-right: 5px;
+}
+.importance {
+  color: rgb(7, 142, 54);
+}
+
+.edit-title-field {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: none;
+}
+.edit-description-field {
+  margin-bottom: 10px;
+  display: none;
+}
+.save-edit-button {
+  display: none;
+}
+
+.task-info {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: start;
+  p {
+    font-weight: 500;
+    span {
+      color: blue;
+    }
+  }
+}
+@media (max-width: 600px) {
+  .task-info {
+    flex-direction: column;
+  }
 }

@@ -1,90 +1,80 @@
-// Selecting all the form items
+const API_KEY = "http://localhost:3000/tasks";
+
+async function getAllData() {
+  const response = await fetch(API_KEY, {
+    method: "GET",
+  });
+  const tasks = await response.json();
+  return tasks;
+}
+
 const taskForm = document.getElementById("form-part");
-const taskNameField = document.getElementById("task-name");
-const taskDescriptionField = document.getElementById("task-description");
 const taskCheckBox = document.getElementById("important-checkbox");
-const addTaskButton = document.getElementById("add-task-button");
 
-let taskName;
-let taskDescription;
-let isImportant;
-let creationDate;
-
-// Selecting the Task Card section
-const taskCardSections = document.getElementById("to-do-tasks");
-
-// Get all the form inputs
-taskForm.addEventListener("submit", (event) => {
+taskForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(event.target);
 
-  taskName = formData.get("task-name");
-  taskDescription = formData.get("task-description");
-  isImportant = taskCheckBox.checked;
+  let taskName = formData.get("task-name");
+  let taskDescription = formData.get("task-description");
 
-  let creationYear = new Date().getFullYear();
-  let creationMonth = new Date().getMonth();
-  let creationDay = new Date().getDate();
+  let tags = formData.get("task-tags");
+  let taskTags = tags.split(",");
+  for (let i = 0; i < taskTags.length; i++) {
+    taskTags[i] = taskTags[i].trim();
+  }
 
-  creationDate = `${creationDay}/${creationMonth + 1}/${creationYear}`;
+  let importance = taskCheckBox.checked;
 
   const todoData = {
-    id: Date.now(),
-    title: taskName,
-    description: taskDescription,
-    importance: isImportant,
-    date: creationDate,
-    completed: false,
+    title: taskName.trim(),
+    description: taskDescription.trim(),
+    isImportant: importance,
+    isCompleted: false,
+    tags: taskTags,
   };
-  localStorage.setItem(todoData.id, JSON.stringify(todoData));
-  taskCardSections.appendChild(createTaskCard(todoData));
-  window.location.reload();
+
+  const response = await fetch(API_KEY, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(todoData),
+  });
+  cardsReload();
 });
 
-// Declaring no variables
-let totalTasksNo = document.getElementById("total-tasks");
-let completedTaskNo = document.getElementById("completed-task");
-let notCompletedTaskNo = document.getElementById("not-completed-task");
-let importantTaskNo = document.getElementById("important-tasks");
-
-let totalTasks = 0;
-let completedTasks = 0;
-let notCompletedTasks = 0;
-let importantTasks = 0;
-
-for (let i = 0; i < localStorage.length; i++) {
-  let key = localStorage.key(i);
-  let object = JSON.parse(localStorage.getItem(key));
-
-  // Calculate Tasks number attributes
-  totalTasks++;
-  if (object.completed) {
-    completedTasks++;
-  } else {
-    notCompletedTasks++;
-  }
-  if (object.importance) {
-    importantTasks++;
-  }
-  taskCardSections.appendChild(createTaskCard(object));
-}
-totalTasksNo.innerHTML = `Total : <span>${totalTasks}</span>`;
-completedTaskNo.innerHTML = `Completed : <span>${completedTasks}</span>`;
-notCompletedTaskNo.innerHTML = `Not Completed : <span>${notCompletedTasks}</span>`;
-importantTaskNo.innerHTML = `Important : <span>${importantTasks}</span>`;
-
-function createTaskCard(object) {
-  let taskCard = document.createElement("div");
-  taskCard.classList.add("card", "task-card");
-  taskCard.appendChild(importancePartElement(object.importance));
-  taskCard.appendChild(bodyPartElement(object));
-  return taskCard;
+function cardsReload() {
+  const children = cardsSection.querySelectorAll("*");
+  children.forEach((child) => child.remove());
+  showCards();
 }
 
-function importancePartElement(important) {
+let cardsSection = document.getElementById("to-do-tasks");
+
+async function showCards() {
+  const allTasks = await getAllData();
+  console.log(allTasks);
+  for (let i = 0; i < allTasks.length; i++) {
+    let task = allTasks[i];
+    let card = createCard(task);
+    cardsSection.appendChild(card);
+  }
+}
+showCards();
+
+function createCard(task) {
+  let card = document.createElement("div");
+  card.classList.add("card", "task-card");
+  card.appendChild(taskImportanceHeader(task.isImportant));
+  card.appendChild(cardBody(task));
+  return card;
+}
+
+function taskImportanceHeader(importance) {
   let importancePart = document.createElement("div");
   importancePart.classList.add("card-header", "task-importance");
-  if (important) {
+  if (importance) {
     importancePart.style.backgroundColor = "rgb(7, 142, 54)";
   } else {
     importancePart.style.backgroundColor = "gray";
@@ -92,14 +82,14 @@ function importancePartElement(important) {
   return importancePart;
 }
 
-function bodyPartElement(todoDetails) {
+function cardBody(todoDetails) {
   let bodyPart = document.createElement("div");
   bodyPart.classList.add("card-body", "task-details");
 
   // Task title
   let taskTitle = document.createElement("h5");
   taskTitle.classList.add("card-title", "task-name");
-  if (todoDetails.importance) {
+  if (todoDetails.isImportant) {
     taskTitle.innerHTML = `${todoDetails.title}<i class="fa-solid fa-star icon-left importance"></i>`;
   } else {
     taskTitle.textContent = todoDetails.title;
@@ -109,11 +99,6 @@ function bodyPartElement(todoDetails) {
   let taskText = document.createElement("p");
   taskText.classList.add("card-text", "task-description");
   taskText.textContent = todoDetails.description;
-
-  // Task added time
-  let taskTime = document.createElement("div");
-  taskTime.className = "task-creation-date";
-  taskTime.textContent = `Date Created On : ${todoDetails.date}`;
 
   // Mark as completed checkbox
   let checkTask = document.createElement("div");
@@ -134,13 +119,11 @@ function bodyPartElement(todoDetails) {
 
   checkBox.addEventListener("change", () => {
     todoDetails.completed = checkBox.checked;
-    localStorage.setItem(todoDetails.id, JSON.stringify(todoDetails));
     if (todoDetails.completed) {
       label.textContent = "Mark as Incomplete";
     } else {
       label.textContent = "Mark as Completed";
     }
-    window.location.reload();
   });
   checkTask.appendChild(checkBox);
   checkTask.appendChild(label);
@@ -165,11 +148,15 @@ function bodyPartElement(todoDetails) {
   deleteButtonForm.id = todoDetails.id;
   deleteButtonForm.innerHTML = `<i class="fa-solid fa-trash-can icon-right"></i>Delete`;
 
-  deleteButtonForm.addEventListener("click", (e) => {
-    const taskId = e.target.id;
-    localStorage.removeItem(taskId);
-    e.target.closest(".task-card").remove();
-    window.location.reload();
+  // Delete Task Operation --
+  deleteButtonForm.addEventListener("click", async (e) => {
+    const id = e.target.id;
+    const response = await fetch(`${API_KEY}/${id}`, {
+      method: "DELETE",
+    });
+    const message = await response.text();
+    console.log(message);
+    cardsReload();
   });
 
   // Edit Title Field
@@ -193,25 +180,22 @@ function bodyPartElement(todoDetails) {
   saveChangesButton.id = todoDetails.id;
   saveChangesButton.textContent = "Save Changes";
 
-  saveChangesButton.addEventListener("click", (e) => {
-    let newTitle = editTitleField.value;
-    let newDescription = editDescriptionField.value;
-    todoDetails.title = newTitle;
-    todoDetails.description = newDescription;
-    localStorage.setItem(e.target.id, JSON.stringify(todoDetails));
-
-    editTitleField.style.display = "none";
-    editDescriptionField.style.display = "none";
-    saveChangesButton.style.display = "none";
-    editButtonForm.disabled = false;
-    deleteButtonForm.disabled = false;
-    window.location.reload();
-  });
+  // save title and description changes operation --
 
   // Adding task components to card
   bodyPart.appendChild(taskTitle);
   bodyPart.appendChild(taskText);
-  bodyPart.appendChild(taskTime);
+  bodyPart.appendChild(createTaskTags(todoDetails.tags));
+  bodyPart.appendChild(
+    createTaskDate(`Date Created On : ${todoDetails.createdAt}`)
+  );
+  if (todoDetails.updatedAt) {
+    bodyPart.appendChild(
+      createTaskDate(`Last Updated At : ${todoDetails.updatedAt}`)
+    );
+  } else {
+    bodyPart.appendChild(createTaskDate(`Last Updated At`));
+  }
   bodyPart.appendChild(checkTask);
   bodyPart.appendChild(editButtonForm);
   bodyPart.appendChild(deleteButtonForm);
@@ -221,34 +205,48 @@ function bodyPartElement(todoDetails) {
   return bodyPart;
 }
 
+function createTaskTags(tags) {
+  let tagsSection = document.createElement("div");
+  tagsSection.className = "tags";
+  tags.forEach((tag) => {
+    let tagItem = document.createElement("div");
+    tagItem.className = "tag";
+    tagItem.textContent = tag;
+    tagsSection.appendChild(tagItem);
+  });
+  return tagsSection;
+}
+
+function createTaskDate(date) {
+  let taskTime = document.createElement("div");
+  taskTime.className = "task-creation-date";
+  taskTime.textContent = date;
+  return taskTime;
+}
+
 // Clear all tasks button
 let clearAllButton = document.querySelector(".clear-all-tasks");
-clearAllButton.addEventListener("click", () => {
-  localStorage.clear();
+clearAllButton.addEventListener("click", async () => {
+  const response = await fetch(API_KEY, {
+    method: "DELETE",
+  });
   window.location.reload();
 });
 
-// Search Options
+let searchCardsSection = document.querySelector(".search-cards");
 let searchForm = document.getElementById("search-form");
-searchForm.addEventListener("submit", (event) => {
+searchForm.addEventListener("submit", async (event) => {
   while (searchCardsSection.firstChild) {
     searchCardsSection.removeChild(searchCardsSection.firstChild);
   }
   event.preventDefault();
   const formData = new FormData(event.target);
   const searchTitle = formData.get("search");
-  console.log(searchTitle);
 
-  for (let i = 0; i < localStorage.length; i++) {
-    let key = localStorage.key(i);
-    let object = JSON.parse(localStorage.getItem(key));
-    let title = object.title;
-
-    if (title.startsWith(searchTitle)) {
-      console.log(title);
-      searchCardsSection.appendChild(createTaskCard(object));
-    }
-  }
+  // --WIP
+  const response = await fetch(API_KEY, {
+    method: "GET",
+  });
+  const message = await response.json();
+  console.log(message);
 });
-
-let searchCardsSection = document.querySelector(".search-cards");

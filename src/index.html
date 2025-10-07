@@ -11,36 +11,53 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link
+      rel="icon"
+      href="./assets/icon/to-do-icon-title.svg"
+      type="image/x-icon"
+    />
     <script type="module" src="./js/main.js"></script>
-    <script type="module" src="./js/script.js"></script>
+    <!-- <script type="module" src="./js/script.js"></script> -->
+    <script type="module" src="./js/back.js"></script>
   </head>
   <body>
     <div class="container py-4 px-3 mx-auto">
       <h1>
         Your To-Do List<i class="fa-solid fa-pen-to-square icon-left"></i>
       </h1>
-      <!-- <div id="success-message">Your Task Added Successfully</div> -->
+
       <section class="to-do-form-section">
         <form action="#" id="form-part">
-          <div class="mb-3 task-title-part">
-            <input
-              type="text"
-              id="task-name"
-              class="form-control"
-              placeholder="Enter Task"
-              name="task-name"
-              required
-            />
-          </div>
-          <div class="mb-3 task-description-part">
-            <input
-              type="text"
-              id="task-description"
-              class="form-control"
-              placeholder="Enter Task Description (max 50 characters)"
-              name="task-description"
-              maxlength="50"
-            />
+          <div class="input-field">
+            <div class="mb-3 task-title-part">
+              <input
+                type="text"
+                id="task-name"
+                class="form-control"
+                placeholder="Enter Task"
+                name="task-name"
+                required
+              />
+            </div>
+            <div class="mb-3 task-description-part">
+              <input
+                type="text"
+                id="task-description"
+                class="form-control"
+                placeholder="Enter Task Description (max 50 characters)"
+                name="task-description"
+                maxlength="50"
+              />
+            </div>
+            <div class="mb-3 task-description-part">
+              <input
+                type="text"
+                id="task-tags"
+                class="form-control"
+                placeholder="Enter Tags"
+                name="task-tags"
+              />
+            </div>
           </div>
           <div class="mb-3">
             <input
@@ -62,32 +79,36 @@
         </form>
       </section>
 
-      <br /><br />
+      <br />
 
       <section class="task-heading">
         <h3>Your Tasks..</h3>
+        <section class="task-info">
+          <p id="total-tasks" class="task-no">Total :</p>
+          <p id="completed-task" class="task-no">Completed :</p>
+          <p id="not-completed-task" class="task-no">Not Completed :</p>
+          <p id="important-tasks" class="task-no">Important :</p>
+        </section>
         <button class="btn btn-danger clear-all-tasks">
           <i class="fa-solid fa-broom icon-right"></i>Clear All
         </button>
       </section>
 
-      <section class="task-info">
-        <p class="total-tasks">Total : <span>100</span></p>
-        <p class="completed-task">Completed : <span>100</span></p>
-        <p class="not-completed-task">Not Completed : <span>100</span></p>
-        <p class="important-tasks">Important : <span>100</span></p>
-      </section>
-
-      <br />
-
       <section id="to-do-tasks">
         <!--Task cards to feature all tasks-->
-        <div class="card task-card">
+        <!-- <div class="card task-card">
           <div class="card-header task-importance"></div>
           <div class="card-body task-details">
             <h5 class="card-title task-name">{Task Title}</h5>
             <p class="card-text task-description">{Task Description}</p>
-            <div class="task-creation-date">Date Created On:</div>
+            <div class="tags">
+              <div class="tag">tag1</div>
+              <div class="tag">tag2</div>
+              <div class="tag">tag3</div>
+              <div class="tag">tag4</div>
+            </div>
+            <div class="task-creation-date">Date Created On: 0/0/00</div>
+            <div class="task-creation-date">Last Updated At: 0/0/00</div>
             <div class="checkbox">
               <input
                 type="checkbox"
@@ -102,19 +123,48 @@
             <button type="button" class="btn btn-primary edit-button">
               <i class="fa-solid fa-pen icon-right"></i>Edit
             </button>
-            
+
             <button type="submit" class="btn btn-danger delete-button">
               <i class="fa-solid fa-trash-can icon-right"></i>Delete
             </button>
-            <input type="text" placeholder="Enter new Title" class="form-control edit-title-field">
-            <input type="text" placeholder="Enter new Description" class="form-control edit-description-field" max="50">
-            <button type="button" class="btn btn-primary save-edit-button w-100">
+            <input
+              type="text"
+              placeholder="Enter new Title"
+              class="form-control edit-title-field"
+            />
+            <input
+              type="text"
+              placeholder="Enter new Description"
+              class="form-control edit-description-field"
+              max="50"
+            />
+            <button
+              type="button"
+              class="btn btn-primary save-edit-button w-100"
+            >
               Save Changes
             </button>
           </div>
-        </div>
+        </div> -->
       </section>
 
-      <section class=""></section>
+      <section class="search-tasks">
+        <h3>Search your Tasks</h3>
+        <form action="#" id="search-form">
+          <input
+            type="text"
+            placeholder="Search by title"
+            id="search"
+            class="form-control"
+            name="search"
+          />
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-magnifying-glass icon-right"></i>Search
+          </button>
+        </form>
+
+        <div class="search-cards"></div>
+      </section>
+    </div>
   </body>
 </html>

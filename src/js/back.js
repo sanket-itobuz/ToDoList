@@ -233,7 +233,7 @@ clearAllButton.addEventListener("click", async () => {
   window.location.reload();
 });
 
-let searchCardsSection = document.querySelector(".search-cards");
+let searchCardsSection = document.querySelector("#search-cards");
 let searchForm = document.getElementById("search-form");
 searchForm.addEventListener("submit", async (event) => {
   while (searchCardsSection.firstChild) {
@@ -241,12 +241,20 @@ searchForm.addEventListener("submit", async (event) => {
   }
   event.preventDefault();
   const formData = new FormData(event.target);
-  const searchTitle = formData.get("search");
+  const searchTitle = formData.get("search-title");
+  const searchTag = formData.get("search-tag");
 
   // --WIP
-  const response = await fetch(API_KEY, {
-    method: "GET",
+  const response = await fetch(
+    `${API_KEY}/search?title=${searchTitle}&tag=${searchTag}`,
+    {
+      method: "GET",
+    }
+  );
+  const searchTasks = await response.json();
+  console.log(typeof searchTasks);
+
+  searchTasks.forEach((task) => {
+    searchCardsSection.appendChild(createCard(task));
   });
-  const message = await response.json();
-  console.log(message);
 });

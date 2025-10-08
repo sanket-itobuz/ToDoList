@@ -25,7 +25,7 @@
 }
 
 #to-do-tasks {
-  max-height: 80vh;
+  max-height: 50vh;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -33,6 +33,9 @@
   flex-wrap: wrap;
   overflow: scroll;
   gap: 30px;
+  background-color: rgba(217, 215, 215, 0.42);
+  border-radius: 10px;
+  padding-top: 20px;
 }
 .task-card {
   margin-bottom: 20px;
@@ -173,18 +176,28 @@
 
 .search-tasks {
   margin-top: 30px;
+  width: 100%;
   #search-form {
     margin-top: 20px;
     display: flex;
     gap: 10px;
-    #search {
-      width: 60%;
+    width: 100%;
+
+    button {
+      height: 38px;
+
+      @media (max-width: 800px) {
+        span {
+          display: none;
+        }
+      }
     }
   }
 }
-.search-cards {
+#search-cards {
   min-width: 100%;
-  max-height: 35vh;
+  max-height: 45vh;
+  min-height: 0;
   margin-top: 20px;
   display: flex;
   flex-direction: row;
@@ -193,4 +206,7 @@
   gap: 20px;
   flex-wrap: wrap;
   overflow: scroll;
+  background-color: rgba(217, 215, 215, 0.42);
+  border-radius: 10px;
+  padding-top: 20px;
 }

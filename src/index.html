@@ -151,19 +151,29 @@
       <section class="search-tasks">
         <h3>Search your Tasks</h3>
         <form action="#" id="search-form">
-          <input
-            type="text"
-            placeholder="Search by title"
-            id="search"
-            class="form-control"
-            name="search"
-          />
+          <div class="mb-3 task-title-part">
+            <input
+              type="text"
+              placeholder="Search by title"
+              class="form-control"
+              name="search-title"
+            />
+          </div>
+          <div class="mb-3 task-title-part">
+            <input
+              type="text"
+              placeholder="Search by tag"
+              class="form-control"
+              name="search-tag"
+            />
+          </div>
           <button type="submit" class="btn btn-primary">
-            <i class="fa-solid fa-magnifying-glass icon-right"></i>Search
+            <i class="fa-solid fa-magnifying-glass icon-right"></i
+            ><span>Search</span>
           </button>
         </form>
 
-        <div class="search-cards"></div>
+        <div id="search-cards"></div>
       </section>
     </div>
   </body>

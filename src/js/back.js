@@ -106,20 +106,36 @@ function cardBody(todoDetails) {
 
   let checkBox = document.createElement("input");
   checkBox.type = "checkbox";
+  checkBox.id = todoDetails._id;
   checkBox.classList.add("form-check-input");
-  checkBox.checked = todoDetails.completed;
+  checkBox.checked = todoDetails.isCompleted;
 
   let label = document.createElement("label");
   label.classList.add("form-check-label", "important-checkbox-label");
-  if (todoDetails.completed) {
+  if (todoDetails.isCompleted) {
     label.textContent = "Mark as Incomplete";
   } else {
     label.textContent = "Mark as Completed";
   }
 
-  checkBox.addEventListener("change", () => {
-    todoDetails.completed = checkBox.checked;
-    if (todoDetails.completed) {
+  checkBox.addEventListener("change", async (e) => {
+    let targetEditId = e.target.id;
+    const editData = {
+      id: targetEditId,
+      isCompleted: checkBox.checked,
+    };
+    const response = await fetch(API_KEY, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editData),
+    });
+    const message = await response.text();
+    console.log(message);
+
+    todoDetails.isCompleted = checkBox.checked;
+    if (todoDetails.isCompleted) {
       label.textContent = "Mark as Incomplete";
     } else {
       label.textContent = "Mark as Completed";
@@ -131,7 +147,7 @@ function cardBody(todoDetails) {
   // Edit Task Button
   let editButtonForm = document.createElement("button");
   editButtonForm.classList.add("btn", "btn-primary", "edit-button");
-  editButtonForm.id = todoDetails.id;
+  editButtonForm.id = todoDetails._id;
   editButtonForm.innerHTML = `<i class="fa-solid fa-pen icon-right"></i>Edit`;
 
   editButtonForm.addEventListener("click", (e) => {
@@ -145,10 +161,11 @@ function cardBody(todoDetails) {
   // Delete Task Button
   let deleteButtonForm = document.createElement("button");
   deleteButtonForm.classList.add("btn", "btn-danger", "delete-button");
-  deleteButtonForm.id = todoDetails.id;
+  deleteButtonForm.id = todoDetails._id;
   deleteButtonForm.innerHTML = `<i class="fa-solid fa-trash-can icon-right"></i>Delete`;
 
-  // Delete Task Operation --
+  // Delete Todo Operation --
+
   deleteButtonForm.addEventListener("click", async (e) => {
     const id = e.target.id;
     const response = await fetch(`${API_KEY}/${id}`, {
@@ -162,12 +179,12 @@ function cardBody(todoDetails) {
   // Edit Title Field
   let editTitleField = document.createElement("input");
   editTitleField.classList.add("form-control", "edit-title-field");
-  editTitleField.placeholder = "Enter new Title";
+  editTitleField.value = todoDetails.title;
 
   // Edit Description Field
   let editDescriptionField = document.createElement("input");
   editDescriptionField.classList.add("form-control", "edit-description-field");
-  editDescriptionField.placeholder = "Enter new Description";
+  editDescriptionField.value = todoDetails.description;
 
   // Save Changes button
   let saveChangesButton = document.createElement("button");
@@ -177,25 +194,50 @@ function cardBody(todoDetails) {
     "save-edit-button",
     "w-100"
   );
-  saveChangesButton.id = todoDetails.id;
+  saveChangesButton.id = todoDetails._id;
   saveChangesButton.textContent = "Save Changes";
 
-  // save title and description changes operation --
+  // Save title and description changes Operation --
 
-  // Adding task components to card
+  saveChangesButton.addEventListener("click", async (e) => {
+    let targetEditId = e.target.id;
+    let editTitle = editTitleField.value;
+    let editDescription = editDescriptionField.value;
+
+    console.log(editTitle);
+    console.log(editDescription);
+
+    const editData = {
+      id: targetEditId,
+      title: editTitle,
+      description: editDescription,
+    };
+    const response = await fetch(API_KEY, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editData),
+    });
+    const message = await response.json();
+    console.log(message);
+    cardsReload();
+  });
+
+  // Adding todo components to card
   bodyPart.appendChild(taskTitle);
   bodyPart.appendChild(taskText);
   bodyPart.appendChild(createTaskTags(todoDetails.tags));
-  bodyPart.appendChild(
-    createTaskDate(`Date Created On : ${todoDetails.createdAt}`)
-  );
-  if (todoDetails.updatedAt) {
-    bodyPart.appendChild(
-      createTaskDate(`Last Updated At : ${todoDetails.updatedAt}`)
-    );
-  } else {
-    bodyPart.appendChild(createTaskDate(`Last Updated At`));
-  }
+  // bodyPart.appendChild(
+  //   createTaskDate(`Date Created On : ${todoDetails.createdAt}`)
+  // );
+  // if (todoDetails.updatedAt) {
+  //   bodyPart.appendChild(
+  //     createTaskDate(`Last Updated At : ${todoDetails.updatedAt}`)
+  //   );
+  // } else {
+  //   bodyPart.appendChild(createTaskDate(`Last Updated At`));
+  // }
   bodyPart.appendChild(checkTask);
   bodyPart.appendChild(editButtonForm);
   bodyPart.appendChild(deleteButtonForm);
@@ -233,6 +275,7 @@ clearAllButton.addEventListener("click", async () => {
   window.location.reload();
 });
 
+// Search todos via title and tagname
 let searchCardsSection = document.querySelector("#search-cards");
 let searchForm = document.getElementById("search-form");
 searchForm.addEventListener("submit", async (event) => {
@@ -244,7 +287,6 @@ searchForm.addEventListener("submit", async (event) => {
   const searchTitle = formData.get("search-title");
   const searchTag = formData.get("search-tag");
 
-  // --WIP
   const response = await fetch(
     `${API_KEY}/search?title=${searchTitle}&tag=${searchTag}`,
     {

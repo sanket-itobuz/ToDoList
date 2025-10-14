@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo-Signup</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="icon"
+      href="../assets/icon/to-do-icon-title.svg"
+      type="image/x-icon"
+    />
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/signupAuth.js"></script>
+  </head>
+  <body>
+    <h1 style="padding: 30px">
+      Your To-Do List<i class="fa-solid fa-pen-to-square icon-left"></i>
+    </h1>
+    <section class="container" style="margin-top: 30px; width: 40%">
+      <form
+        style="
+          padding: 30px;
+          background-color: rgba(144, 140, 140, 0.353);
+          border-radius: 5px;
+        "
+        id="signUpForm"
+      >
+        <div class="mb-3 name-field">
+          <label for="exampleInputEmail1" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control username"
+            name="username"
+            required
+          />
+        </div>
+        <div class="mb-3 email-field">
+          <label for="exampleInputEmail1" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="mb-3 password-field">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control password"
+            name="password"
+            required
+          />
+        </div>
+        <div class="mb-3 otp-field">
+          <label for="exampleInputPassword1" class="form-label">OTP</label>
+          <input type="text" class="form-control otp" name="otp" />
+        </div>
+        <button type="button" class="btn btn-primary otp-button">
+          Get OTP
+        </button>
+        <button type="submit" class="btn btn-success signup-button">
+          SignUp
+        </button>
+      </form>
+    </section>
+  </body>
+</html>

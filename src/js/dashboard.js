@@ -50,16 +50,44 @@ function cardsReload() {
   showCards();
 }
 
+// Declaring no variables
+const totalTasksNo = document.getElementById("total-tasks");
+const completedTaskNo = document.getElementById("completed-task");
+const notCompletedTaskNo = document.getElementById("not-completed-task");
+const importantTaskNo = document.getElementById("important-tasks");
+
 let cardsSection = document.getElementById("to-do-tasks");
 
 async function showCards() {
   const allTasks = await getAllData();
   console.log(allTasks);
+
+  let totalTasks = 0;
+  let completedTasks = 0;
+  let notCompletedTasks = 0;
+  let importantTasks = 0;
+
   for (let i = 0; i < allTasks.length; i++) {
     let task = allTasks[i];
+
+    totalTasks++;
+    if (task.isCompleted) {
+      completedTasks++;
+    } else {
+      notCompletedTasks++;
+    }
+    if (task.isImportant) {
+      importantTasks++;
+    }
+
     let card = createCard(task);
     cardsSection.appendChild(card);
   }
+
+  totalTasksNo.innerHTML = `Total : <span>${totalTasks}</span>`;
+  completedTaskNo.innerHTML = `Completed : <span>${completedTasks}</span>`;
+  notCompletedTaskNo.innerHTML = `Not Completed : <span>${notCompletedTasks}</span>`;
+  importantTaskNo.innerHTML = `Important : <span>${importantTasks}</span>`;
 }
 showCards();
 

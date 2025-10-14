@@ -1,0 +1,58 @@
+const API_KEY = "http://localhost:3000/user/auth";
+
+const otpField = document.querySelector(".otp-field");
+const otpButton = document.querySelector(".otp-button");
+const signupButton = document.querySelector(".signup-button");
+const emailData = document.querySelector(".email");
+
+otpButton.addEventListener("click", async (event) => {
+  otpField.style.display = "block";
+  otpButton.style.display = "none";
+  signupButton.style.display = "block";
+
+  const email = emailData.value;
+  console.log(email);
+
+  const response = await fetch(`${API_KEY}/otp`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  const message = await response.json();
+  console.log(message);
+});
+
+const signUpForm = document.getElementById("signUpForm");
+
+signUpForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const signUpFormData = new FormData(event.target);
+
+  const username = signUpFormData.get("username");
+  const email = signUpFormData.get("email");
+  const password = signUpFormData.get("password");
+  const otp = signUpFormData.get("otp");
+
+  const userData = {
+    username,
+    email,
+    password,
+    otp,
+  };
+
+  const response = await fetch(`${API_KEY}/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  const user = await response.json();
+  console.log(user);
+  window.location.href = "http://localhost:8080/pages/login.html";
+});

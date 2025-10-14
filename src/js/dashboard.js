@@ -1,8 +1,12 @@
 const API_KEY = "http://localhost:3000/tasks";
 
 async function getAllData() {
-  const response = await fetch(API_KEY, {
+  const response = await fetch(`${API_KEY}/fetch`, {
     method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+    },
   });
   const tasks = await response.json();
   return tasks;
@@ -34,13 +38,17 @@ taskForm.addEventListener("submit", async (event) => {
     tags: taskTags,
   };
 
-  const response = await fetch(API_KEY, {
+  const response = await fetch(`${API_KEY}/save`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
     },
     body: JSON.stringify(todoData),
   });
+  const message = await response.json();
+  console.log(message);
+
   cardsReload();
 });
 
@@ -152,14 +160,15 @@ function cardBody(todoDetails) {
       id: targetEditId,
       isCompleted: checkBox.checked,
     };
-    const response = await fetch(API_KEY, {
+    const response = await fetch(`${API_KEY}/edit`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
       body: JSON.stringify(editData),
     });
-    const message = await response.text();
+    const message = await response.json();
     console.log(message);
 
     todoDetails.isCompleted = checkBox.checked;
@@ -192,14 +201,17 @@ function cardBody(todoDetails) {
   deleteButtonForm.id = todoDetails._id;
   deleteButtonForm.innerHTML = `<i class="fa-solid fa-trash-can icon-right"></i>Delete`;
 
-  // Delete Todo Operation --
-
+  // Delete Todo Operation
   deleteButtonForm.addEventListener("click", async (e) => {
     const id = e.target.id;
-    const response = await fetch(`${API_KEY}/${id}`, {
+    const response = await fetch(`${API_KEY}/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+      },
     });
-    const message = await response.text();
+    const message = await response.json();
     console.log(message);
     cardsReload();
   });
@@ -225,8 +237,7 @@ function cardBody(todoDetails) {
   saveChangesButton.id = todoDetails._id;
   saveChangesButton.textContent = "Save Changes";
 
-  // Save title and description changes Operation --
-
+  // Save title and description changes Operation
   saveChangesButton.addEventListener("click", async (e) => {
     let targetEditId = e.target.id;
     let editTitle = editTitleField.value;
@@ -240,10 +251,11 @@ function cardBody(todoDetails) {
       title: editTitle,
       description: editDescription,
     };
-    const response = await fetch(API_KEY, {
+    const response = await fetch(`${API_KEY}/edit`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
       },
       body: JSON.stringify(editData),
     });
@@ -256,6 +268,7 @@ function cardBody(todoDetails) {
   bodyPart.appendChild(taskTitle);
   bodyPart.appendChild(taskText);
   bodyPart.appendChild(createTaskTags(todoDetails.tags));
+
   // bodyPart.appendChild(
   //   createTaskDate(`Date Created On : ${todoDetails.createdAt}`)
   // );
@@ -266,6 +279,7 @@ function cardBody(todoDetails) {
   // } else {
   //   bodyPart.appendChild(createTaskDate(`Last Updated At`));
   // }
+
   bodyPart.appendChild(checkTask);
   bodyPart.appendChild(editButtonForm);
   bodyPart.appendChild(deleteButtonForm);
@@ -296,16 +310,24 @@ function createTaskDate(date) {
 
 // Clear all tasks button
 let clearAllButton = document.querySelector(".clear-all-tasks");
+
 clearAllButton.addEventListener("click", async () => {
-  const response = await fetch(API_KEY, {
+  const response = await fetch(`${API_KEY}/delete`, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+    },
   });
+  const message = await response.json();
+  console.log(message);
   window.location.reload();
 });
 
 // Search todos via title and tagname
 let searchCardsSection = document.querySelector("#search-cards");
 let searchForm = document.getElementById("search-form");
+
 searchForm.addEventListener("submit", async (event) => {
   while (searchCardsSection.firstChild) {
     searchCardsSection.removeChild(searchCardsSection.firstChild);
@@ -319,6 +341,10 @@ searchForm.addEventListener("submit", async (event) => {
     `${API_KEY}/search?title=${searchTitle}&tag=${searchTag}`,
     {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`,
+      },
     }
   );
   const searchTasks = await response.json();

@@ -30,5 +30,7 @@ loginForm.addEventListener("submit", async (event) => {
   localStorage.setItem("ACCESS_TOKEN", user.accessToken);
   localStorage.setItem("REFRESH_TOKEN", user.refreshToken);
 
-  window.location.href = "http://localhost:8080/pages/dashboard.html";
+  if (user.success) {
+    window.location.href = "http://localhost:8080/pages/dashboard.html";
+  }
 });

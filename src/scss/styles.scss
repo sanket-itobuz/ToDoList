@@ -211,4 +211,23 @@
   padding-top: 20px;
 }
 
+.info-part {
+  display: flex;
+  flex-direction: column;
+  gap: -10px;
+  .info {
+    font-size: 15px;
+    color: $gray-900;
+    a {
+      text-decoration: none;
+      color: #0d6efd;
+    }
+  }
+  .reset-password {
+    margin-top: -10px;
+  }
+}
+
 @import "signUpAuth";
+@import "resetPassword";
+@import "userSection";

@@ -1,9 +1,9 @@
 const API_KEY = "http://localhost:3000/user/auth";
 
-const otpField = document.querySelector(".otp-field");
-const otpButton = document.querySelector(".otp-button");
+const otpField = document.querySelector(".signup-otp-field");
+const otpButton = document.querySelector(".signup-otp-button");
 const signupButton = document.querySelector(".signup-button");
-const emailData = document.querySelector(".email");
+const emailData = document.querySelector(".signup-email");
 
 otpButton.addEventListener("click", async (event) => {
   otpField.style.display = "block";

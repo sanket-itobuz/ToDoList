@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToDo-Login</title>
+    <title>ToDo - Login</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -32,24 +32,36 @@
         "
         id="loginForm"
       >
-        <div class="mb-3 email-field">
+        <div class="mb-3 login-email-field">
           <label for="exampleInputEmail1" class="form-label">Email</label>
           <input
             type="email"
-            class="form-control email"
+            class="form-control login-email"
             name="email"
+            placeholder="Enter Your Email"
             required
           />
         </div>
-        <div class="mb-3 password-field">
+        <div class="mb-3 login-password-field">
           <label for="exampleInputPassword1" class="form-label">Password</label>
           <input
             type="password"
-            class="form-control password"
+            class="form-control login-password"
             name="password"
+            placeholder="Enter Your Password"
             required
           />
         </div>
+
+        <div class="info-part">
+          <p class="signup-info info">
+            Already have an Account? <a href="signup.html">Signup Here</a>
+          </p>
+          <p class="reset-password info">
+            Forgot Password? <a href="resetpassword.html">Reset Password</a>
+          </p>
+        </div>
+
         <button type="submit" class="btn btn-success login-button">
           Login
         </button>

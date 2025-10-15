@@ -27,8 +27,8 @@ loginForm.addEventListener("submit", async (event) => {
   const user = await response.json();
   console.log(user);
 
-  localStorage.setItem("ACCESS_TOKEN", user.accessToken);
-  localStorage.setItem("REFRESH_TOKEN", user.refreshToken);
+  localStorage.setItem("access_token", user.accessToken);
+  localStorage.setItem("refresh_token", user.refreshToken);
 
   if (user.success) {
     window.location.href = "http://localhost:8080/pages/dashboard.html";

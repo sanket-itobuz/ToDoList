@@ -32,38 +32,56 @@
         "
         id="signUpForm"
       >
-        <div class="mb-3 name-field">
+        <div class="mb-3 signup-name-field">
           <label for="exampleInputEmail1" class="form-label">Username</label>
           <input
             type="text"
-            class="form-control username"
+            class="form-control signup-username"
             name="username"
+            placeholder="Enter Username"
             required
           />
         </div>
-        <div class="mb-3 email-field">
+        <div class="mb-3 signup-email-field">
           <label for="exampleInputEmail1" class="form-label">Email</label>
           <input
             type="email"
-            class="form-control email"
+            class="form-control signup-email"
             name="email"
+            placeholder="Enter Email"
             required
           />
         </div>
-        <div class="mb-3 password-field">
+        <div class="mb-3 signup-password-field">
           <label for="exampleInputPassword1" class="form-label">Password</label>
           <input
             type="password"
-            class="form-control password"
+            class="form-control signup-password"
             name="password"
+            placeholder="Enter Password"
             required
           />
         </div>
-        <div class="mb-3 otp-field">
+        <div class="mb-3 signup-otp-field">
           <label for="exampleInputPassword1" class="form-label">OTP</label>
-          <input type="text" class="form-control otp" name="otp" />
+          <input
+            type="text"
+            class="form-control signup-otp"
+            name="otp"
+            placeholder="Enter OTP"
+          />
         </div>
-        <button type="button" class="btn btn-primary otp-button">
+
+        <div class="info-part">
+          <p class="login-info info">
+            Already have an Account? <a href="login.html">Login Here</a>
+          </p>
+          <p class="reset-password info">
+            Forgot Password? <a href="resetpassword.html">Reset Password</a>
+          </p>
+        </div>
+
+        <button type="button" class="btn btn-primary signup-otp-button">
           Get OTP
         </button>
         <button type="submit" class="btn btn-success signup-button">

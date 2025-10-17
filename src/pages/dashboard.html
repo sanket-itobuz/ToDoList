@@ -21,16 +21,20 @@
   </head>
   <body>
     <div class="container py-4 px-3 mx-auto">
-      <h1>
-        Your To-Do List<i class="fa-solid fa-pen-to-square icon-left"></i>
-      </h1>
+      <header>
+        <h1>
+          Your To-Do List<i class="fa-solid fa-pen-to-square icon-left"></i>
+        </h1>
+
+        <div id="toastSection"></div>
+      </header>
 
       <section class="user-details">
         <div class="card">
-          <h5 class="card-header" id="user">{User}</h5>
+          <h5 class="card-header" id="user"></h5>
           <div class="card-body">
-            <p class="card-text" id="email">{email}</p>
-            <p class="card-text" id="createdAt">{createdOn}</p>
+            <p class="card-text" id="email"></p>
+            <p class="card-text" id="createdAt"></p>
             <a href="resetpassword.html" class="btn btn-primary reset"
               ><i class="fa-solid fa-unlock-keyhole icon-right"></i>Reset
               Password</a

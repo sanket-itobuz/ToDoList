@@ -1,3 +1,5 @@
+import showToast from "./toastOperation";
+
 const API_KEY = "http://localhost:3000/user/auth";
 
 const otpField = document.querySelector(".reset-otp-field");
@@ -13,24 +15,35 @@ const newPassword = document.querySelector(".reset-password");
 const resetForm = document.getElementById("resetPasswordForm");
 
 otpButton.addEventListener("click", async (event) => {
-  otpField.style.display = "block";
-  resetPasswordField.style.display = "block";
-  otpButton.style.display = "none";
-  resetButton.style.display = "block";
-
   const email = emailData.value;
   console.log(email);
 
-  const response = await fetch(`${API_KEY}/otp`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email }),
-  });
+  if (!email) {
+    showToast({ message: "Please Provide an Email", success: false });
+    return;
+  }
 
-  const message = await response.json();
-  console.log(message);
+  try {
+    const response = await fetch(`${API_KEY}/otp`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, purpose: false }),
+    });
+    const message = await response.json();
+    showToast(message);
+
+    if (!message.success) {
+      return;
+    }
+    otpField.style.display = "block";
+    resetPasswordField.style.display = "block";
+    otpButton.style.display = "none";
+    resetButton.style.display = "block";
+  } catch (err) {
+    showToast({ message: "Something Went Wrong", success: false });
+  }
 });
 
 resetForm.addEventListener("submit", async (event) => {
@@ -47,15 +60,25 @@ resetForm.addEventListener("submit", async (event) => {
     password: newPassword,
   };
 
-  const response = await fetch(`${API_KEY}/reset`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updateData),
-  });
+  try {
+    const response = await fetch(`${API_KEY}/reset`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateData),
+    });
 
-  const message = await response.json();
-  console.log(message);
-  window.location.href = "../pages/dashboard.html";
+    const message = await response.json();
+    showToast(message);
+
+    if (message.success) {
+      setTimeout(() => {
+        window.location.href = "http://localhost:8080/pages/dashboard.html";
+      }, 3000);
+    }
+  } catch (err) {
+    console.log(err);
+    showToast({ message: "Something Went Wrong", success: false });
+  }
 });

@@ -20,74 +20,75 @@
     <script type="module" src="../js/signupAuth.js"></script>
   </head>
   <body>
-    <h1 style="padding: 30px">
-      Your To-Do List<i class="fa-solid fa-pen-to-square icon-left"></i>
-    </h1>
-    <section class="container" style="margin-top: 30px; width: 40%">
-      <form
-        style="
-          padding: 30px;
-          background-color: rgba(144, 140, 140, 0.353);
-          border-radius: 5px;
-        "
-        id="signUpForm"
-      >
-        <div class="mb-3 signup-name-field">
-          <label for="exampleInputEmail1" class="form-label">Username</label>
-          <input
-            type="text"
-            class="form-control signup-username"
-            name="username"
-            placeholder="Enter Username"
-            required
-          />
-        </div>
-        <div class="mb-3 signup-email-field">
-          <label for="exampleInputEmail1" class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control signup-email"
-            name="email"
-            placeholder="Enter Email"
-            required
-          />
-        </div>
-        <div class="mb-3 signup-password-field">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input
-            type="password"
-            class="form-control signup-password"
-            name="password"
-            placeholder="Enter Password"
-            required
-          />
-        </div>
-        <div class="mb-3 signup-otp-field">
-          <label for="exampleInputPassword1" class="form-label">OTP</label>
-          <input
-            type="text"
-            class="form-control signup-otp"
-            name="otp"
-            placeholder="Enter OTP"
-          />
-        </div>
+    <div class="container py-4 px-3 mx-auto">
+      <header>
+        <h1>
+          Your To-Do List<i class="fa-solid fa-pen-to-square icon-left"></i>
+        </h1>
 
-        <div class="info-part">
-          <p class="login-info info">
-            Already have an Account? <a href="login.html">Login Here</a>
-          </p>
-          <p class="reset-password info">
-            Forgot Password? <a href="resetpassword.html">Reset Password</a>
-          </p>
-        </div>
+        <div id="toastSection"></div>
+      </header>
+      <section class="container auth">
+        <form id="signUpForm" class="rounded">
+          <div class="mb-3 signup-name-field">
+            <label for="exampleInputEmail1" class="form-label">Username</label>
+            <input
+              type="text"
+              class="form-control signup-username"
+              name="username"
+              placeholder="Enter Username"
+              required
+            />
+          </div>
+          <div class="mb-3 signup-email-field">
+            <label for="exampleInputEmail1" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control signup-email"
+              name="email"
+              placeholder="Enter Email"
+              required
+            />
+          </div>
+          <div class="mb-3 signup-password-field">
+            <label for="exampleInputPassword1" class="form-label"
+              >Password</label
+            >
+            <input
+              type="password"
+              class="form-control signup-password"
+              name="password"
+              placeholder="Enter Password"
+              required
+            />
+          </div>
+          <div class="mb-3 signup-otp-field">
+            <label for="exampleInputPassword1" class="form-label">OTP</label>
+            <input
+              type="text"
+              class="form-control signup-otp"
+              name="otp"
+              placeholder="Enter OTP"
+            />
+          </div>
 
-        <button type="button" class="btn btn-primary signup-otp-button">
-          Get OTP
-        </button>
-        <button type="submit" class="btn btn-success signup-button">
-          SignUp
-        </button>
-      </form>
-    </section>
+          <div class="info-part">
+            <p class="login-info info">
+              Already have an Account? <a href="login.html">Login Here</a>
+            </p>
+            <p class="reset-password info">
+              Forgot Password? <a href="resetpassword.html">Reset Password</a>
+            </p>
+          </div>
+
+          <button type="button" class="btn btn-primary signup-otp-button">
+            Get OTP
+          </button>
+          <button type="submit" class="btn btn-success signup-button">
+            SignUp<i class="fa-solid fa-user-plus icon-left"></i>
+          </button>
+        </form>
+      </section>
+    </div>
   </body>
 </html>

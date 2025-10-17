@@ -1,40 +1,32 @@
-import refreshTokens from "./refreshToken";
+import customFetch from "./refreshToken";
+import showToast from "./toastOperation.js";
+
+window.fetch = customFetch;
 
 if (localStorage.getItem("access_token") == null) {
   window.location.href = "/pages/login.html";
 } else {
   const USER_API_KEY = "http://localhost:3000/user/auth";
 
-  let response = await fetch(USER_API_KEY, {
+  let user = await fetch(USER_API_KEY, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
   });
-
-  let user = await response.json();
-  if (user.error) {
-    await refreshTokens();
-    response = await fetch(USER_API_KEY, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
-    });
-    user = await response.json();
-  }
-  console.log(user);
 
   const username = document.getElementById("user");
   const email = document.getElementById("email");
   const createdAt = document.getElementById("createdAt");
   const logOut = document.querySelector(".logout");
 
+  const timeStr = user.createdAt;
+  const dateString = timeStr.split("T");
+  const date = dateString[0].split("-");
+
   username.innerHTML = `${user.username} <i class="fa-solid fa-circle-check" style="color: #198754"></i>`;
   email.innerHTML = `<i class="fa-solid fa-envelope" style="color: #dc3545"></i> ${user.email}`;
-  createdAt.innerHTML = `<i class="fa-solid fa-calendar" style="color: #0d6efd"></i> ${user.createdAt}`;
+  createdAt.innerHTML = `<i class="fa-solid fa-calendar" style="color: #0d6efd"></i> ${date[2]}/${date[1]}/${date[0]}`;
 
   logOut.addEventListener("click", (event) => {
     localStorage.clear();
@@ -44,31 +36,13 @@ if (localStorage.getItem("access_token") == null) {
   const API_KEY = "http://localhost:3000/tasks";
 
   async function getAllData() {
-    try {
-      let response = await fetch(`${API_KEY}/fetch`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      let tasks = await response.json();
-
-      if (tasks.error) {
-        await refreshTokens();
-        response = await fetch(`${API_KEY}/fetch`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
-        tasks = await response.json();
-      }
-      return tasks;
-    } catch (err) {
-      console.log("JWT Expire Problem", err);
-    }
+    let tasks = await fetch(`${API_KEY}/fetch`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return tasks;
   }
 
   const taskForm = document.getElementById("form-part");
@@ -83,6 +57,7 @@ if (localStorage.getItem("access_token") == null) {
 
     let tags = formData.get("task-tags");
     let taskTags = tags.split(",");
+
     for (let i = 0; i < taskTags.length; i++) {
       taskTags[i] = taskTags[i].trim();
     }
@@ -97,20 +72,15 @@ if (localStorage.getItem("access_token") == null) {
       tags: taskTags,
     };
 
-    const response = await fetch(`${API_KEY}/save`, {
+    const message = await fetch(`${API_KEY}/save`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
       body: JSON.stringify(todoData),
     });
-    const message = await response.json();
-    if (message.error) {
-      await refreshTokens();
-    }
-    console.log(message);
 
+    showToast(message);
     cardsReload();
   });
 
@@ -221,25 +191,23 @@ if (localStorage.getItem("access_token") == null) {
 
     checkBox.addEventListener("change", async (e) => {
       let targetEditId = e.target.id;
+
       const editData = {
         id: targetEditId,
         isCompleted: checkBox.checked,
       };
-      const response = await fetch(`${API_KEY}/edit`, {
+
+      const message = await fetch(`${API_KEY}/edit`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
         body: JSON.stringify(editData),
       });
-      const message = await response.json();
-      if (message.error) {
-        await refreshTokens();
-      }
       console.log(message);
 
       todoDetails.isCompleted = checkBox.checked;
+
       if (todoDetails.isCompleted) {
         label.textContent = "Mark as Incomplete";
       } else {
@@ -272,18 +240,16 @@ if (localStorage.getItem("access_token") == null) {
     // Delete Todo Operation
     deleteButtonForm.addEventListener("click", async (e) => {
       const id = e.target.id;
-      const response = await fetch(`${API_KEY}/delete/${id}`, {
+
+      const message = await fetch(`${API_KEY}/delete/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       });
-      const message = await response.json();
-      if (message.error) {
-        await refreshTokens();
-      }
-      console.log(message);
+
+      showToast(message);
+
       cardsReload();
     });
 
@@ -317,27 +283,21 @@ if (localStorage.getItem("access_token") == null) {
       let editTitle = editTitleField.value;
       let editDescription = editDescriptionField.value;
 
-      console.log(editTitle);
-      console.log(editDescription);
-
       const editData = {
         id: targetEditId,
         title: editTitle,
         description: editDescription,
       };
-      const response = await fetch(`${API_KEY}/edit`, {
+      const message = await fetch(`${API_KEY}/edit`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
         body: JSON.stringify(editData),
       });
-      const message = await response.json();
-      if (message.error) {
-        await refreshTokens();
-      }
-      console.log(message);
+
+      showToast(message);
+
       cardsReload();
     });
 
@@ -346,16 +306,7 @@ if (localStorage.getItem("access_token") == null) {
     bodyPart.appendChild(taskText);
     bodyPart.appendChild(createTaskTags(todoDetails.tags));
 
-    // bodyPart.appendChild(
-    //   createTaskDate(`Date Created On : ${todoDetails.createdAt}`)
-    // );
-    // if (todoDetails.updatedAt) {
-    //   bodyPart.appendChild(
-    //     createTaskDate(`Last Updated At : ${todoDetails.updatedAt}`)
-    //   );
-    // } else {
-    //   bodyPart.appendChild(createTaskDate(`Last Updated At`));
-    // }
+    bodyPart.appendChild(createTaskDate(todoDetails.createdAt));
 
     bodyPart.appendChild(checkTask);
     bodyPart.appendChild(editButtonForm);
@@ -369,6 +320,7 @@ if (localStorage.getItem("access_token") == null) {
   function createTaskTags(tags) {
     let tagsSection = document.createElement("div");
     tagsSection.className = "tags";
+
     tags.forEach((tag) => {
       let tagItem = document.createElement("div");
       tagItem.className = "tag";
@@ -378,10 +330,14 @@ if (localStorage.getItem("access_token") == null) {
     return tagsSection;
   }
 
-  function createTaskDate(date) {
+  function createTaskDate(time) {
     let taskTime = document.createElement("div");
     taskTime.className = "task-creation-date";
-    taskTime.textContent = date;
+
+    const dateString = time.split("T");
+    const date = dateString[0].split("-");
+
+    taskTime.innerHTML = `<i class="fa-solid fa-calendar" style="color: #0d6efd"></i> ${date[2]}/${date[1]}/${date[0]}`;
     return taskTime;
   }
 
@@ -389,18 +345,15 @@ if (localStorage.getItem("access_token") == null) {
   let clearAllButton = document.querySelector(".clear-all-tasks");
 
   clearAllButton.addEventListener("click", async () => {
-    const response = await fetch(`${API_KEY}/delete`, {
+    const message = await fetch(`${API_KEY}/clear`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     });
-    const message = await response.json();
-    if (message.error) {
-      await refreshTokens();
-    }
-    console.log(message);
+
+    showToast(message);
+
     cardsReload();
   });
 
@@ -412,25 +365,21 @@ if (localStorage.getItem("access_token") == null) {
     while (searchCardsSection.firstChild) {
       searchCardsSection.removeChild(searchCardsSection.firstChild);
     }
+
     event.preventDefault();
     const formData = new FormData(event.target);
     const searchTitle = formData.get("search-title");
     const searchTag = formData.get("search-tag");
 
-    const response = await fetch(
+    const searchTasks = await fetch(
       `${API_KEY}/search?title=${searchTitle}&tag=${searchTag}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       }
     );
-    const searchTasks = await response.json();
-    if (searchTasks.error) {
-      await refreshTokens();
-    }
     console.log(typeof searchTasks);
 
     searchTasks.forEach((task) => {

@@ -1,3 +1,5 @@
+import showToast from "./toastOperation";
+
 const API_KEY = "http://localhost:3000/user/auth";
 
 const otpField = document.querySelector(".signup-otp-field");
@@ -6,23 +8,24 @@ const signupButton = document.querySelector(".signup-button");
 const emailData = document.querySelector(".signup-email");
 
 otpButton.addEventListener("click", async (event) => {
-  otpField.style.display = "block";
-  otpButton.style.display = "none";
-  signupButton.style.display = "block";
-
   const email = emailData.value;
-  console.log(email);
 
   const response = await fetch(`${API_KEY}/otp`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email }),
+    body: JSON.stringify({ email, purpose: true }),
   });
 
   const message = await response.json();
-  console.log(message);
+  showToast(message);
+
+  if (message.success) {
+    otpField.style.display = "block";
+    otpButton.style.display = "none";
+    signupButton.style.display = "block";
+  }
 });
 
 const signUpForm = document.getElementById("signUpForm");
@@ -53,6 +56,11 @@ signUpForm.addEventListener("submit", async (event) => {
   });
 
   const user = await response.json();
-  console.log(user);
-  window.location.href = "http://localhost:8080/pages/login.html";
+  showToast(user);
+
+  if (user.success) {
+    setTimeout(() => {
+      window.location.href = "http://localhost:8080/pages/login.html";
+    }, 3000);
+  }
 });

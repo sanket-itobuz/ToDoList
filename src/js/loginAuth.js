@@ -1,3 +1,5 @@
+import showToast from "./toastOperation";
+
 const API_KEY = "http://localhost:3000/user/auth";
 
 const signupButton = document.querySelector(".login-button");
@@ -27,10 +29,14 @@ loginForm.addEventListener("submit", async (event) => {
   const user = await response.json();
   console.log(user);
 
+  showToast(user);
+
   localStorage.setItem("access_token", user.accessToken);
   localStorage.setItem("refresh_token", user.refreshToken);
 
   if (user.success) {
-    window.location.href = "http://localhost:8080/pages/dashboard.html";
+    setTimeout(() => {
+      window.location.href = "http://localhost:8080/pages/dashboard.html";
+    }, 3000);
   }
 });

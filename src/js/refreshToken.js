@@ -1,28 +1,3 @@
-// const API_KEY = "http://localhost:3000/user/auth/refresh";
-
-// export default async function refreshTokens() {
-//   console.log("Need to Refresh Access token");
-
-//   if (!localStorage.getItem("refresh_token")) {
-//     localStorage.clear();
-//     window.location.href = "http://localhost:8080/pages/login.html";
-//     return;
-//   }
-
-//   const response = await fetch(API_KEY, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `${localStorage.getItem("refresh_token")}`,
-//     },
-//   });
-
-//   const message = await response.json();
-
-//   localStorage.setItem("access_token", message.accessToken);
-//   localStorage.setItem("refresh_token", message.refreshToken);
-// }
-
 const { fetch: originalFetch } = window;
 const ownAPI = "http://localhost:8000/";
 const API = "http://localhost:3000/user/auth/refresh";
@@ -33,10 +8,10 @@ const customFetch = async (url, options) => {
   )}`;
 
   let response = await originalFetch(url, options);
-  response = await response.json();
+  let data = await response.json();
 
-  if (response.error === "jwt expired" || response.error === "jwt malformed") {
-    console.log("Access Expired");
+  if (response.status === 401) {
+    console.log("Access Token Expired");
     const newToken = await resetToken();
 
     localStorage.setItem("access_token", newToken.accessToken);
@@ -47,9 +22,9 @@ const customFetch = async (url, options) => {
     )}`;
 
     response = await originalFetch(url, options);
-    response = await response.json();
+    data = await response.json();
 
-    if (newToken.error === "jwt expired") {
+    if (newToken.status === 401) {
       localStorage.clear();
       window.location.href = "/pages/login.html";
     }
@@ -60,23 +35,27 @@ const customFetch = async (url, options) => {
     window.location.href = "/pages/login.html";
   }
 
-  return response;
+  return data;
 };
 
 async function resetToken() {
-  console.log("regenerating tokens");
+  console.log("Refreshing tokens");
 
-  const res = await originalFetch(API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("refresh_token")}`,
-    },
-    body: JSON.stringify({}),
-  });
+  try {
+    const res = await originalFetch(API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("refresh_token")}`,
+      },
+      body: JSON.stringify({}),
+    });
 
-  const newToken = await res.json();
-  return newToken;
+    const newToken = await res.json();
+    return newToken;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export default customFetch;

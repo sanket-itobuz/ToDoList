@@ -18,25 +18,29 @@ loginForm.addEventListener("submit", async (event) => {
     password,
   };
 
-  const response = await fetch(`${API_KEY}/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
+  try {
+    const response = await fetch(`${API_KEY}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
 
-  const user = await response.json();
-  console.log(user);
+    const user = await response.json();
+    console.log(user);
 
-  showToast(user);
+    showToast(user);
 
-  localStorage.setItem("access_token", user.accessToken);
-  localStorage.setItem("refresh_token", user.refreshToken);
+    localStorage.setItem("access_token", user.accessToken);
+    localStorage.setItem("refresh_token", user.refreshToken);
 
-  if (user.success) {
-    setTimeout(() => {
-      window.location.href = "http://localhost:8080/pages/dashboard.html";
-    }, 3000);
+    if (user.success) {
+      setTimeout(() => {
+        window.location.href = "http://localhost:8080/pages/dashboard.html";
+      }, 3000);
+    }
+  } catch (err) {
+    console.log(err);
   }
 });

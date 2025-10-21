@@ -74,7 +74,7 @@ resetForm.addEventListener("submit", async (event) => {
 
     if (message.success) {
       setTimeout(() => {
-        window.location.href = "http://localhost:8080/pages/dashboard.html";
+        window.location.href = "http://localhost:8080/pages/login.html";
       }, 3000);
     }
   } catch (err) {

@@ -10,21 +10,25 @@ const emailData = document.querySelector(".signup-email");
 otpButton.addEventListener("click", async (event) => {
   const email = emailData.value;
 
-  const response = await fetch(`${API_KEY}/otp`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, purpose: true }),
-  });
+  try {
+    const response = await fetch(`${API_KEY}/otp`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, purpose: true }),
+    });
 
-  const message = await response.json();
-  showToast(message);
+    const message = await response.json();
+    showToast(message);
 
-  if (message.success) {
-    otpField.style.display = "block";
-    otpButton.style.display = "none";
-    signupButton.style.display = "block";
+    if (message.success) {
+      otpField.style.display = "block";
+      otpButton.style.display = "none";
+      signupButton.style.display = "block";
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 
@@ -47,20 +51,24 @@ signUpForm.addEventListener("submit", async (event) => {
     otp,
   };
 
-  const response = await fetch(`${API_KEY}/signup`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
+  try {
+    const response = await fetch(`${API_KEY}/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
 
-  const user = await response.json();
-  showToast(user);
+    const user = await response.json();
+    showToast(user);
 
-  if (user.success) {
-    setTimeout(() => {
-      window.location.href = "http://localhost:8080/pages/login.html";
-    }, 3000);
+    if (user.success) {
+      setTimeout(() => {
+        window.location.href = "http://localhost:8080/pages/login.html";
+      }, 3000);
+    }
+  } catch (err) {
+    console.log(err);
   }
 });

@@ -1,19 +1,25 @@
-import customFetch from "./refreshToken";
+import customFetch from "./refreshToken.js";
 import showToast from "./toastOperation.js";
 
 window.fetch = customFetch;
 
+const USER_API_KEY = "http://localhost:3000/user/auth/fetch";
+const API_KEY = "http://localhost:3000/tasks";
+
 if (localStorage.getItem("access_token") == null) {
   window.location.href = "/pages/login.html";
 } else {
-  const USER_API_KEY = "http://localhost:3000/user/auth";
-
-  let user = await fetch(USER_API_KEY, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  let user;
+  try {
+    user = await fetch(USER_API_KEY, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
 
   const username = document.getElementById("user");
   const email = document.getElementById("email");
@@ -24,29 +30,32 @@ if (localStorage.getItem("access_token") == null) {
   const dateString = timeStr.split("T");
   const date = dateString[0].split("-");
 
-  username.innerHTML = `${user.username} <i class="fa-solid fa-circle-check" style="color: #198754"></i>`;
-  email.innerHTML = `<i class="fa-solid fa-envelope" style="color: #dc3545"></i> ${user.email}`;
-  createdAt.innerHTML = `<i class="fa-solid fa-calendar" style="color: #0d6efd"></i> ${date[2]}/${date[1]}/${date[0]}`;
+  username.innerHTML = `${user.username} <i class="fa-solid fa-circle-check"></i>`;
+  email.innerHTML = `<i class="fa-solid fa-envelope"></i> ${user.email}`;
+  createdAt.innerHTML = `<i class="fa-solid fa-calendar"></i> ${date[2]}/${date[1]}/${date[0]}`;
 
   logOut.addEventListener("click", (event) => {
     localStorage.clear();
     window.location.href = "../pages/login.html";
   });
 
-  const API_KEY = "http://localhost:3000/tasks";
-
   async function getAllData() {
-    let tasks = await fetch(`${API_KEY}/fetch`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return tasks;
+    try {
+      let tasks = await fetch(`${API_KEY}/fetch`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      return tasks;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  const taskForm = document.getElementById("form-part");
-  const taskCheckBox = document.getElementById("important-checkbox");
+  const taskForm = document.getElementById("formPart");
+  const taskCheckBox = document.getElementById("importantCheckbox");
 
   taskForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -72,15 +81,19 @@ if (localStorage.getItem("access_token") == null) {
       tags: taskTags,
     };
 
-    const message = await fetch(`${API_KEY}/save`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(todoData),
-    });
+    try {
+      const message = await fetch(`${API_KEY}/save`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(todoData),
+      });
 
-    showToast(message);
+      showToast(message);
+    } catch (err) {
+      console.log(err);
+    }
     cardsReload();
   });
 
@@ -91,12 +104,12 @@ if (localStorage.getItem("access_token") == null) {
   }
 
   // Declaring no variables
-  const totalTasksNo = document.getElementById("total-tasks");
-  const completedTaskNo = document.getElementById("completed-task");
-  const notCompletedTaskNo = document.getElementById("not-completed-task");
-  const importantTaskNo = document.getElementById("important-tasks");
+  const totalTasksNo = document.getElementById("totalTasks");
+  const completedTaskNo = document.getElementById("completedTask");
+  const notCompletedTaskNo = document.getElementById("notCompletedTask");
+  const importantTaskNo = document.getElementById("importantTasks");
 
-  let cardsSection = document.getElementById("to-do-tasks");
+  let cardsSection = document.getElementById("toDoTasks");
 
   async function showCards() {
     const allTasks = await getAllData();
@@ -144,9 +157,9 @@ if (localStorage.getItem("access_token") == null) {
     importancePart.classList.add("card-header", "task-importance");
 
     if (importance) {
-      importancePart.style.backgroundColor = "rgb(7, 142, 54)";
+      importancePart.style.backgroundColor = "#007EA7";
     } else {
-      importancePart.style.backgroundColor = "gray";
+      importancePart.style.backgroundColor = "#9AD1D4";
     }
     return importancePart;
   }
@@ -158,6 +171,7 @@ if (localStorage.getItem("access_token") == null) {
     // Task title
     let taskTitle = document.createElement("h5");
     taskTitle.classList.add("card-title", "task-name");
+    taskTitle.style.color = "#003249";
 
     if (todoDetails.isImportant) {
       taskTitle.innerHTML = `${todoDetails.title}<i class="fa-solid fa-star icon-left importance"></i>`;
@@ -169,6 +183,7 @@ if (localStorage.getItem("access_token") == null) {
     let taskText = document.createElement("p");
     taskText.classList.add("card-text", "task-description");
     taskText.textContent = todoDetails.description;
+    taskText.style.color = "#007EA7";
 
     // Mark as completed checkbox
     let checkTask = document.createElement("div");
@@ -197,14 +212,19 @@ if (localStorage.getItem("access_token") == null) {
         isCompleted: checkBox.checked,
       };
 
-      const message = await fetch(`${API_KEY}/edit`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editData),
-      });
-      console.log(message);
+      try {
+        const message = await fetch(`${API_KEY}/edit`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editData),
+        });
+
+        console.log(message);
+      } catch (err) {
+        console.log(err);
+      }
 
       todoDetails.isCompleted = checkBox.checked;
 
@@ -241,14 +261,18 @@ if (localStorage.getItem("access_token") == null) {
     deleteButtonForm.addEventListener("click", async (e) => {
       const id = e.target.id;
 
-      const message = await fetch(`${API_KEY}/delete/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      try {
+        const message = await fetch(`${API_KEY}/delete/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      showToast(message);
+        showToast(message);
+      } catch (err) {
+        console.log(err);
+      }
 
       cardsReload();
     });
@@ -288,15 +312,20 @@ if (localStorage.getItem("access_token") == null) {
         title: editTitle,
         description: editDescription,
       };
-      const message = await fetch(`${API_KEY}/edit`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editData),
-      });
 
-      showToast(message);
+      try {
+        const message = await fetch(`${API_KEY}/edit`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editData),
+        });
+
+        showToast(message);
+      } catch (err) {
+        console.log(err);
+      }
 
       cardsReload();
     });
@@ -325,6 +354,8 @@ if (localStorage.getItem("access_token") == null) {
       let tagItem = document.createElement("div");
       tagItem.className = "tag";
       tagItem.textContent = tag;
+      tagItem.style.backgroundColor = "#007EA7";
+      tagItem.style.color = "#f5f9faff";
       tagsSection.appendChild(tagItem);
     });
     return tagsSection;
@@ -337,7 +368,7 @@ if (localStorage.getItem("access_token") == null) {
     const dateString = time.split("T");
     const date = dateString[0].split("-");
 
-    taskTime.innerHTML = `<i class="fa-solid fa-calendar" style="color: #0d6efd"></i> ${date[2]}/${date[1]}/${date[0]}`;
+    taskTime.innerHTML = `<i class="fa-solid fa-calendar" style="color: #007EA7"></i> ${date[2]}/${date[1]}/${date[0]}`;
     return taskTime;
   }
 
@@ -345,21 +376,25 @@ if (localStorage.getItem("access_token") == null) {
   let clearAllButton = document.querySelector(".clear-all-tasks");
 
   clearAllButton.addEventListener("click", async () => {
-    const message = await fetch(`${API_KEY}/clear`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      const message = await fetch(`${API_KEY}/clear`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    showToast(message);
+      showToast(message);
+    } catch (err) {
+      console.log(err);
+    }
 
     cardsReload();
   });
 
   // Search todos via title and tagname
-  let searchCardsSection = document.querySelector("#search-cards");
-  let searchForm = document.getElementById("search-form");
+  let searchCardsSection = document.querySelector("#searchCards");
+  let searchForm = document.getElementById("searchForm");
 
   searchForm.addEventListener("submit", async (event) => {
     while (searchCardsSection.firstChild) {
@@ -371,19 +406,23 @@ if (localStorage.getItem("access_token") == null) {
     const searchTitle = formData.get("search-title");
     const searchTag = formData.get("search-tag");
 
-    const searchTasks = await fetch(
-      `${API_KEY}/search?title=${searchTitle}&tag=${searchTag}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log(typeof searchTasks);
+    try {
+      const searchTasks = await fetch(
+        `${API_KEY}/search?title=${searchTitle}&tag=${searchTag}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(typeof searchTasks);
 
-    searchTasks.forEach((task) => {
-      searchCardsSection.appendChild(createCard(task));
-    });
+      searchTasks.forEach((task) => {
+        searchCardsSection.appendChild(createCard(task));
+      });
+    } catch (err) {
+      console.log(err);
+    }
   });
 }

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ToDo List</title>
+    <title>Taskly</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -13,7 +13,7 @@
     />
     <link
       rel="icon"
-      href="../assets/icon/to-do-icon-title.svg"
+      href="../assets/icon/sticky-note.png"
       type="image/x-icon"
     />
     <script type="module" src="../js/main.js"></script>
@@ -22,10 +22,9 @@
   <body>
     <div class="container py-4 px-3 mx-auto">
       <header>
-        <h1>
-          Your To-Do List<i class="fa-solid fa-pen-to-square icon-left"></i>
+        <h1 class="app-name">
+          Taskly<i class="fa-solid fa-pen-to-square icon-left"></i>
         </h1>
-
         <div id="toastSection"></div>
       </header>
 
@@ -48,12 +47,12 @@
       </section>
 
       <section class="to-do-form-section">
-        <form action="#" id="form-part">
+        <form action="#" id="formPart" class="task-add-form">
           <div class="input-field">
             <div class="mb-3 task-title-part">
               <input
                 type="text"
-                id="task-name"
+                id="taskName"
                 class="form-control"
                 placeholder="Enter Task"
                 name="task-name"
@@ -63,17 +62,17 @@
             <div class="mb-3 task-description-part">
               <input
                 type="text"
-                id="task-description"
+                id="taskDescription"
                 class="form-control"
                 placeholder="Enter Task Description (max 50 characters)"
                 name="task-description"
                 maxlength="50"
               />
             </div>
-            <div class="mb-3 task-description-part">
+            <div class="mb-3 task-tags-part">
               <input
                 type="text"
-                id="task-tags"
+                id="taskTags"
                 class="form-control"
                 placeholder="Enter Tags"
                 name="task-tags"
@@ -83,7 +82,7 @@
           <div class="mb-3">
             <input
               type="checkbox"
-              id="important-checkbox"
+              id="importantCheckbox"
               class="form-check-input"
               name="important-checkbox"
             />
@@ -91,7 +90,7 @@
               >Mark as Important</label
             >
           </div>
-          <button type="submit" id="add-task-button" class="btn btn-success">
+          <button type="submit" id="addTaskButton" class="btn btn-success">
             Add Task<i class="fa-solid fa-plus icon-left"></i>
           </button>
           <button type="reset" class="btn btn-secondary">
@@ -105,17 +104,17 @@
       <section class="task-heading">
         <h3>Your Tasks..</h3>
         <section class="task-info">
-          <p id="total-tasks" class="task-no">Total :</p>
-          <p id="completed-task" class="task-no">Completed :</p>
-          <p id="not-completed-task" class="task-no">Not Completed :</p>
-          <p id="important-tasks" class="task-no">Important :</p>
+          <p id="totalTasks" class="task-no">Total :</p>
+          <p id="completedTask" class="task-no">Completed :</p>
+          <p id="notCompletedTask" class="task-no">Not Completed :</p>
+          <p id="importantTasks" class="task-no">Important :</p>
         </section>
         <button class="btn btn-danger clear-all-tasks">
           <i class="fa-solid fa-broom icon-right"></i>Clear All
         </button>
       </section>
 
-      <section id="to-do-tasks">
+      <section id="toDoTasks">
         <!--Task cards to feature all tasks-->
         <!-- <div class="card task-card">
           <div class="card-header task-importance"></div>
@@ -171,8 +170,8 @@
 
       <section class="search-tasks">
         <h3>Search your Tasks</h3>
-        <form action="#" id="search-form">
-          <div class="mb-3 task-title-part">
+        <form action="#" id="searchForm">
+          <div class="mb-3 task-search-part">
             <input
               type="text"
               placeholder="Search by title"
@@ -180,7 +179,7 @@
               name="search-title"
             />
           </div>
-          <div class="mb-3 task-title-part">
+          <div class="mb-3 task-search-part">
             <input
               type="text"
               placeholder="Search by tag"
@@ -194,7 +193,7 @@
           </button>
         </form>
 
-        <div id="search-cards"></div>
+        <div id="searchCards"></div>
       </section>
     </div>
   </body>

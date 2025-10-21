@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToDo - Login</title>
+    <title>Taskly - Login</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -13,7 +13,7 @@
     />
     <link
       rel="icon"
-      href="../assets/icon/to-do-icon-title.svg"
+      href="../assets/icon/sticky-note.png"
       type="image/x-icon"
     />
     <script type="module" src="../js/main.js"></script>
@@ -22,14 +22,15 @@
   <body>
     <div class="container py-4 px-3 mx-auto">
       <header>
-        <h1>
-          Your To-Do List<i class="fa-solid fa-pen-to-square icon-left"></i>
+        <h1 class="app-name">
+          Taskly<i class="fa-solid fa-pen-to-square icon-left"></i>
         </h1>
 
         <div id="toastSection"></div>
       </header>
       <section class="container auth">
         <form id="loginForm" class="rounded">
+          <h3 class="auth-head">Login</h3>
           <div class="mb-3 login-email-field">
             <label for="exampleInputEmail1" class="form-label">Email</label>
             <input
@@ -62,7 +63,7 @@
             </p>
           </div>
 
-          <button type="submit" class="btn btn-success login-button">
+          <button type="submit" class="btn btn-success login-button submit">
             Login<i class="fa-solid fa-arrow-right-to-bracket icon-left"></i>
           </button>
         </form>

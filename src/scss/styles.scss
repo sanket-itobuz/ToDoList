@@ -1,136 +1,19 @@
 // Import all of Bootstrap’s CSS
 @import "bootstrap/scss/bootstrap";
 
-.input-field {
-  display: flex;
-  gap: 20px;
-  .task-title-part {
-    width: 50%;
-  }
-  .task-description-part {
-    width: 50%;
-  }
-}
-@media (max-width: 770px) {
-  .input-field {
-    flex-direction: column;
-    gap: 0px;
-    .task-title-part {
-      width: 100%;
-    }
-    .task-description-part {
-      width: 100%;
-    }
-  }
+* {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-#to-do-tasks {
-  max-height: 50vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  flex-wrap: wrap;
-  overflow: scroll;
-  gap: 30px;
-  background-color: rgba(217, 215, 215, 0.42);
-  border-radius: 10px;
-  padding-top: 20px;
-}
-.task-card {
-  margin-bottom: 20px;
-  border: none;
-  width: 20%;
-}
-@media (max-width: 1500px) {
-  .task-card {
-    height: auto;
-    width: 20%;
-  }
-}
-@media (min-width: 1500px) {
-  .task-card {
-    height: auto;
-    width: 20%;
-  }
-}
-@media (max-width: 1200px) {
-  .task-card {
-    height: auto;
-    width: 40%;
-  }
-}
-@media (max-width: 800px) {
-  #to-do-tasks {
-    flex-direction: column;
-    flex-wrap: wrap;
-  }
-  .task-card {
-    width: 100%;
-  }
+body {
+  background-color: #f6f9f9;
 }
 
-.task-card:hover {
-  box-shadow: 5px 5px 10px gray;
-  cursor: pointer;
-}
-.task-details {
-  background-color: rgba(249, 247, 247, 0.512);
-}
-.task-importance {
-  background-color: gray;
-}
-.task-description {
-  height: 30px;
-  flex-wrap: nowrap;
-  overflow: scroll;
-}
-.tags {
-  display: flex;
-  justify-content: start;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 30px;
-
-  .tag {
-    padding-left: 5px;
-    padding-right: 5px;
-    background-color: gray;
-    color: white;
-    border-radius: 5px;
-    font-size: 15px;
-  }
+.app-name {
+  color: #003249;
 }
 
-.delete-task {
-  margin-top: 20px;
-}
-.checkbox {
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-.form-check-input {
-  margin-right: 5px;
-}
-.task-heading {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-@media (max-width: 800px) {
-  .task-heading {
-    flex-direction: column;
-    .task-info {
-      width: 100%;
-    }
-  }
-}
-
-.edit-button {
-  margin-right: 8px;
-}
 .icon-left {
   margin-left: 5px;
 }
@@ -138,77 +21,7 @@
   margin-right: 5px;
 }
 .importance {
-  color: rgb(7, 142, 54);
-}
-
-.edit-title-field {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: none;
-}
-.edit-description-field {
-  margin-bottom: 10px;
-  display: none;
-}
-.save-edit-button {
-  display: none;
-}
-
-.task-info {
-  width: 60%;
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: start;
-  .task-no {
-    font-weight: 500;
-    span {
-      color: #0d6efd;
-    }
-  }
-}
-@media (max-width: 600px) {
-  .task-info {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-.search-tasks {
-  margin-top: 30px;
-  width: 100%;
-  #search-form {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-    width: 100%;
-
-    button {
-      height: 38px;
-
-      @media (max-width: 800px) {
-        span {
-          display: none;
-        }
-      }
-    }
-  }
-}
-#search-cards {
-  min-width: 100%;
-  max-height: 45vh;
-  min-height: 0;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  overflow: scroll;
-  background-color: rgba(243, 241, 241, 0.42);
-  border-radius: 10px;
-  padding-top: 20px;
+  color: #007ea7;
 }
 
 .info-part {
@@ -269,15 +82,47 @@ header {
   align-items: center;
 
   form {
-    background-color: rgba(144, 140, 140, 0.353);
+    background: linear-gradient(180deg, #9ad1d4, #ccdbdc);
     width: 100%;
     max-width: 480px;
     padding: 40px;
     padding-top: 60px;
     padding-bottom: 60px;
+
+    .auth-head {
+      margin-bottom: 20px;
+      color: #007ea7;
+    }
+    div {
+      label {
+        color: #007ea7;
+      }
+      input {
+        border: 2px solid #007ea7;
+        color: #007ea7;
+      }
+      input::placeholder {
+        color: #007ea7;
+      }
+    }
+    .otp {
+      background-color: #007ea7;
+      border: 2px solid #007ea7;
+    }
+    .submit {
+      background: transparent;
+      color: #007ea7;
+      border: 2px solid #007ea7;
+    }
+    .submit:hover {
+      background-color: #007ea7;
+      color: #ccdbdc;
+      border: 2px solid #007ea7;
+    }
   }
 }
 
 @import "signUpAuth";
 @import "resetPassword";
 @import "userSection";
+@import "dashboard.scss";

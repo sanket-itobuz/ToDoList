@@ -6,7 +6,7 @@ export default function showToast(response) {
   if (response.success) {
     toastSection.innerHTML = toast.successToast(response.message);
   } else {
-    toastSection.innerHTML = toast.errorToast(response.message);
+    toastSection.innerHTML = toast.errorToast(response.error);
   }
 
   setTimeout(() => {

@@ -1,4 +1,4 @@
-import Templates from "../templates/templates.js";
+import Templates from "../../templates/templates.js";
 
 const toast = new Templates();
 

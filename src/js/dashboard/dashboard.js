@@ -1,5 +1,5 @@
-import customFetch from "./refreshToken.js";
-import showToast from "./toastOperation.js";
+import customFetch from "../tokens/refreshToken.js";
+import showToast from "../toasts/toastOperation.js";
 
 window.fetch = customFetch;
 
@@ -31,7 +31,7 @@ if (localStorage.getItem("access_token") == null) {
   const date = dateString[0].split("-");
 
   username.innerHTML = `${user.username} <i class="fa-solid fa-circle-check"></i>`;
-  email.innerHTML = `<i class="fa-solid fa-envelope"></i> ${user.email}`;
+  email.innerHTML = `<i class="fa-solid fa-envelope" style="color: rgb(200, 3, 3)"></i> ${user.email}`;
   createdAt.innerHTML = `<i class="fa-solid fa-calendar"></i> ${date[2]}/${date[1]}/${date[0]}`;
 
   logOut.addEventListener("click", (event) => {
@@ -239,7 +239,7 @@ if (localStorage.getItem("access_token") == null) {
 
     // Edit Task Button
     let editButtonForm = document.createElement("button");
-    editButtonForm.classList.add("btn", "btn-primary", "edit-button");
+    editButtonForm.classList.add("btn", "edit-button");
     editButtonForm.id = todoDetails._id;
     editButtonForm.innerHTML = `<i class="fa-solid fa-pen icon-right"></i>Edit`;
 
@@ -253,7 +253,7 @@ if (localStorage.getItem("access_token") == null) {
 
     // Delete Task Button
     let deleteButtonForm = document.createElement("button");
-    deleteButtonForm.classList.add("btn", "btn-danger", "delete-button");
+    deleteButtonForm.classList.add("btn", "delete-button");
     deleteButtonForm.id = todoDetails._id;
     deleteButtonForm.innerHTML = `<i class="fa-solid fa-trash-can icon-right"></i>Delete`;
 

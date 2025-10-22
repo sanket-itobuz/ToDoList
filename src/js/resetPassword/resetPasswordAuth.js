@@ -1,4 +1,4 @@
-import showToast from "./toastOperation";
+import showToast from "../toasts/toastOperation.js";
 
 const API_KEY = "http://localhost:3000/user/auth";
 

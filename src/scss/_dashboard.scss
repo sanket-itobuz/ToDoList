@@ -7,6 +7,7 @@
     .card-header {
       background-color: #9ad1d4;
       color: #003249;
+      padding-top: 20px;
       i {
         color: #007ea7;
       }
@@ -74,8 +75,11 @@
     }
   }
   .mb-3 {
+    input[type="checkbox"] {
+      border: 2px solid #007ea7;
+    }
     label {
-      color: #003249;
+      color: #007ea7;
     }
   }
   button {

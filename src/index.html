@@ -11,19 +11,61 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link
-      rel="icon"
-      href="./assets/icon/to-do-icon-title.svg"
-      type="image/x-icon"
-    />
+    <link rel="icon" href="./assets/icon/sticky-note.png" type="image/x-icon" />
     <script type="module" src="./js/main.js"></script>
   </head>
   <body>
     <div class="container py-4 px-3 mx-auto">
-      <h1>Taskly<i class="fa-solid fa-pen-to-square icon-left"></i></h1>
-      <section class="container">
-        <a href="/pages/signup.html" class="btn btn-success">SignUp</a>
-        <a href="/pages/login.html" class="btn btn-primary">Login</a>
+      <h1 class="app-name">
+        <a href="index.html"
+          >Taskly<i class="fa-solid fa-pen-to-square icon-left"></i
+        ></a>
+      </h1>
+      <section class="container bg-home">
+        <div class="app-info">
+          <h1 class="header">Welcome to <span>Taskly</span>!!</h1>
+          <p>
+            Your Ultimate Task Manager to make your both Professional and
+            Personal Tasks managed
+          </p>
+        </div>
+
+        <div class="buttons">
+          <a href="/pages/signup.html" class="btn btn-lg signup-btn"
+            >Create Account<i class="fa-solid fa-user-plus icon-left"></i
+          ></a>
+          <a href="/pages/login.html" class="btn btn-lg"
+            >Login<i class="fa-solid fa-right-to-bracket icon-left"></i
+          ></a>
+          <a href="/pages/dashboard.html" class="btn btn-lg dash"
+            >Goto Dashboard<i class="fa-solid fa-address-card icon-left"></i
+          ></a>
+        </div>
+      </section>
+
+      <section class="container features">
+        <h2>Features</h2>
+        <ul class="feature">
+          <li class="points">
+            <b>Easy to Use : </b>Very handy task manager and can be used to all
+            age groups for respective Working Purpose and Categorical Task
+            storing
+          </li>
+          <li class="points">
+            <b>Simple Interface : </b>Very simple interface to use it
+            efficiently, professionally acceptable and easy Task Management
+          </li>
+          <li class="points">
+            <b>Profile Management : </b>We don't share your Personal Info with
+            anyone, proper task Management dedicated to verified User specific
+            use
+          </li>
+          <li class="points">
+            <b>Tags and Searching : </b>Easily navigate with our categorical
+            options like Task Importance, Tags, Completion fields and filtering
+            options as Task name and Tags
+          </li>
+        </ul>
       </section>
     </div>
   </body>

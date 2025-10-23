@@ -9,30 +9,33 @@ const customFetch = async (url, options) => {
 
   let response = await originalFetch(url, options);
   let data = await response.json();
+  console.log(data);
 
-  if (response.status === 401) {
-    console.log("Access Token Expired");
-    const newToken = await resetToken();
+  if (!response.success) {
+    if (response.status === 401) {
+      console.log("Access Token Expired");
+      const newToken = await resetToken();
 
-    localStorage.setItem("access_token", newToken.accessToken);
-    localStorage.setItem("refresh_token", newToken.refreshToken);
+      localStorage.setItem("access_token", newToken.accessToken);
+      localStorage.setItem("refresh_token", newToken.refreshToken);
 
-    options.headers.Authorization = `Bearer ${localStorage.getItem(
-      "access_token"
-    )}`;
+      options.headers.Authorization = `Bearer ${localStorage.getItem(
+        "access_token"
+      )}`;
 
-    response = await originalFetch(url, options);
-    data = await response.json();
+      response = await originalFetch(url, options);
+      data = await response.json();
 
-    if (newToken.status === 401) {
-      localStorage.clear();
-      window.location.href = "/pages/login.html";
+      if (newToken.status === 401) {
+        localStorage.clear();
+        window.location.href = "../../pages/login.html";
+      }
+    } else if (
+      !localStorage.getItem("access_token") ||
+      !localStorage.getItem("refresh_token")
+    ) {
+      window.location.href = "../../pages/login.html";
     }
-  } else if (
-    !localStorage.getItem("access_token") ||
-    !localStorage.getItem("refresh_token")
-  ) {
-    window.location.href = "/pages/login.html";
   }
 
   return data;
@@ -52,6 +55,7 @@ async function resetToken() {
     });
 
     const newToken = await res.json();
+    console.log(newToken);
     return newToken;
   } catch (err) {
     console.log(err);

@@ -6,8 +6,9 @@ window.fetch = customFetch;
 const USER_API_KEY = "http://localhost:3000/user/auth/fetch";
 const API_KEY = "http://localhost:3000/tasks";
 
-if (localStorage.getItem("access_token") == null) {
-  window.location.href = "/pages/login.html";
+if (localStorage.getItem("refresh_token") === "undefined") {
+  console.log("Refresh Token Expired");
+  window.location.href = "../../pages/login.html";
 } else {
   let user;
   try {
@@ -36,7 +37,7 @@ if (localStorage.getItem("access_token") == null) {
 
   logOut.addEventListener("click", (event) => {
     localStorage.clear();
-    window.location.href = "../pages/login.html";
+    window.location.href = "../../pages/login.html";
   });
 
   async function getAllData() {
@@ -50,7 +51,7 @@ if (localStorage.getItem("access_token") == null) {
 
       return tasks;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -59,6 +60,7 @@ if (localStorage.getItem("access_token") == null) {
 
   taskForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+
     const formData = new FormData(event.target);
 
     let taskName = formData.get("task-name");
@@ -92,7 +94,7 @@ if (localStorage.getItem("access_token") == null) {
 
       showToast(message);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     cardsReload();
   });
@@ -292,12 +294,7 @@ if (localStorage.getItem("access_token") == null) {
 
     // Save Changes button
     let saveChangesButton = document.createElement("button");
-    saveChangesButton.classList.add(
-      "btn",
-      "btn-primary",
-      "save-edit-button",
-      "w-100"
-    );
+    saveChangesButton.classList.add("btn", "save-edit-button", "w-100");
     saveChangesButton.id = todoDetails._id;
     saveChangesButton.textContent = "Save Changes";
 

@@ -283,6 +283,25 @@
   }
 }
 
+.edit-title-field {
+  border: 2px solid #007ea7;
+  color: #003249;
+}
+.edit-description-field {
+  border: 2px solid #007ea7;
+  color: #003249;
+}
+.save-edit-button {
+  color: #007ea7;
+  background: transparent;
+  border: 2px solid #007ea7;
+}
+.save-edit-button:hover {
+  background-color: #007ea7;
+  color: #e9f0f1;
+  border: 2px solid #007ea7;
+}
+
 // Task search part
 
 .search-tasks {

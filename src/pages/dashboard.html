@@ -18,12 +18,15 @@
     />
     <script type="module" src="../js/main.js"></script>
     <script type="module" src="../js/dashboard/dashboard.js"></script>
+    <script type="module" src="../js/profile_image/profile.js"></script>
   </head>
   <body>
     <div class="container py-4 px-3 mx-auto">
       <header>
         <h1 class="app-name">
-          Taskly<i class="fa-solid fa-pen-to-square icon-left"></i>
+          <a href="../index.html">
+            Taskly<i class="fa-solid fa-pen-to-square icon-left"></i
+          ></a>
         </h1>
         <div id="toastSection"></div>
       </header>
@@ -31,17 +34,35 @@
       <section class="user-details">
         <div class="card">
           <h5 class="card-header" id="user"></h5>
-          <div class="card-body">
-            <p class="card-text" id="email"></p>
-            <p class="card-text" id="createdAt"></p>
-            <a href="resetpassword.html" class="btn btn-primary reset"
-              ><i class="fa-solid fa-unlock-keyhole icon-right"></i>Reset
-              Password</a
-            >
-            <button class="btn btn-danger logout">
-              <i class="fa-solid fa-arrow-right-from-bracket icon-right"></i
-              >Logout
-            </button>
+          <div class="card-body user">
+            <div class="user-info">
+              <p class="card-text" id="email"></p>
+              <p class="card-text" id="createdAt"></p>
+              <a href="resetpassword.html" class="btn btn-primary reset"
+                ><i class="fa-solid fa-unlock-keyhole icon-right"></i>Reset
+                Password</a
+              >
+              <button class="btn btn-danger logout">
+                <i class="fa-solid fa-arrow-right-from-bracket icon-right"></i
+                >Logout
+              </button>
+            </div>
+            <div class="user-profile">
+              <img src="" alt="" />
+              <form
+                action=""
+                method="post"
+                enctype="multipart/form-data"
+                id="editImage"
+              >
+                <input type="file" name="file" id="fileInput" />
+                <button class="btn" type="submit">
+                  Upload Picture<i
+                    class="fa-solid fa-arrow-up-from-bracket icon-left"
+                  ></i>
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </section>

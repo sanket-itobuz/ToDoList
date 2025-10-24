@@ -8,3 +8,35 @@
 .card-header {
   font-size: 30px;
 }
+.user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .user-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+
+    img {
+      display: block;
+      border: 2px solid black;
+      height: 150px;
+      width: 150px;
+      border-radius: 50%;
+    }
+    button {
+      display: block;
+    }
+
+    @media (max-width: 770px) {
+      flex-direction: column;
+      margin-bottom: 30px;
+    }
+  }
+
+  @media (max-width: 770px) {
+    flex-direction: column-reverse;
+  }
+}

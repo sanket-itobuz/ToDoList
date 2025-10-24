@@ -6,11 +6,15 @@ window.fetch = customFetch;
 const USER_API_KEY = "http://localhost:3000/user/auth/fetch";
 const API_KEY = "http://localhost:3000/tasks";
 
-if (localStorage.getItem("refresh_token") === "undefined") {
+if (
+  localStorage.getItem("refresh_token") === "undefined" ||
+  !localStorage.getItem("access_token")
+) {
   console.log("Refresh Token Expired");
   window.location.href = "../../pages/login.html";
 } else {
   let user;
+
   try {
     user = await fetch(USER_API_KEY, {
       method: "POST",
@@ -105,25 +109,20 @@ if (localStorage.getItem("refresh_token") === "undefined") {
     showCards();
   }
 
-  // Declaring no variables
-  const totalTasksNo = document.getElementById("totalTasks");
-  const completedTaskNo = document.getElementById("completedTask");
-  const notCompletedTaskNo = document.getElementById("notCompletedTask");
-  const importantTaskNo = document.getElementById("importantTasks");
-
-  let cardsSection = document.getElementById("toDoTasks");
-
-  async function showCards() {
-    const allTasks = await getAllData();
-    console.log(allTasks);
+  function taskCountInfo(tasks) {
+    // Declaring no variables
+    const totalTasksNo = document.getElementById("totalTasks");
+    const completedTaskNo = document.getElementById("completedTask");
+    const notCompletedTaskNo = document.getElementById("notCompletedTask");
+    const importantTaskNo = document.getElementById("importantTasks");
 
     let totalTasks = 0;
     let completedTasks = 0;
     let notCompletedTasks = 0;
     let importantTasks = 0;
 
-    for (let i = 0; i < allTasks.length; i++) {
-      let task = allTasks[i];
+    for (let i = 0; i < tasks.length; i++) {
+      let task = tasks[i];
 
       totalTasks++;
       if (task.isCompleted) {
@@ -134,15 +133,26 @@ if (localStorage.getItem("refresh_token") === "undefined") {
       if (task.isImportant) {
         importantTasks++;
       }
-
-      let card = createCard(task);
-      cardsSection.appendChild(card);
     }
-
     totalTasksNo.innerHTML = `Total : <span>${totalTasks}</span>`;
     completedTaskNo.innerHTML = `Completed : <span>${completedTasks}</span>`;
     notCompletedTaskNo.innerHTML = `Not Completed : <span>${notCompletedTasks}</span>`;
     importantTaskNo.innerHTML = `Important : <span>${importantTasks}</span>`;
+  }
+
+  let cardsSection = document.getElementById("toDoTasks");
+
+  async function showCards() {
+    const allTasks = await getAllData();
+    console.log(allTasks);
+
+    for (let i = 0; i < allTasks.length; i++) {
+      let task = allTasks[i];
+
+      let card = createCard(task);
+      cardsSection.appendChild(card);
+    }
+    taskCountInfo(allTasks);
   }
   showCards();
 
@@ -330,8 +340,8 @@ if (localStorage.getItem("refresh_token") === "undefined") {
     // Adding todo components to card
     bodyPart.appendChild(taskTitle);
     bodyPart.appendChild(taskText);
-    bodyPart.appendChild(createTaskTags(todoDetails.tags));
 
+    bodyPart.appendChild(createTaskTags(todoDetails.tags));
     bodyPart.appendChild(createTaskDate(todoDetails.createdAt));
 
     bodyPart.appendChild(checkTask);

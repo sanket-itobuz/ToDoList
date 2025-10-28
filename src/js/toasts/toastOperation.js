@@ -2,7 +2,7 @@ import Templates from "../../templates/templates.js";
 
 const toast = new Templates();
 
-export default function showToast(response) {
+export default function showToast(response, url = "") {
   if (response.success) {
     toastSection.innerHTML = toast.successToast(response.message);
   } else {
@@ -11,5 +11,8 @@ export default function showToast(response) {
 
   setTimeout(() => {
     toastSection.innerHTML = "";
+    if (response.success && url) {
+      window.location.href = url;
+    }
   }, 3000);
 }

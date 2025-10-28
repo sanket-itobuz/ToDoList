@@ -73,6 +73,11 @@
         color: #007ea7;
       }
     }
+    @media (max-width: 770px) {
+      .mb-3 {
+        width: 100%;
+      }
+    }
   }
   .mb-3 {
     input[type="checkbox"] {
@@ -106,7 +111,7 @@
   }
 }
 
-#toDoTasks {
+.to-do-tasks {
   max-height: 50vh;
   width: 100%;
   display: flex;
@@ -143,7 +148,7 @@
   }
 }
 @media (max-width: 800px) {
-  #to-do-tasks {
+  .to-do-tasks {
     flex-direction: column;
     flex-wrap: wrap;
   }
@@ -201,9 +206,14 @@
   align-items: center;
   margin-bottom: 20px;
 }
+.task-info {
+  width: 60%;
+}
 @media (max-width: 800px) {
   .task-heading {
     flex-direction: column;
+    width: 100%;
+
     .task-info {
       width: 100%;
     }
@@ -253,7 +263,6 @@
     color: #007ea7;
   }
   .task-info {
-    width: 60%;
     margin-top: 20px;
     display: flex;
     justify-content: space-evenly;
@@ -312,7 +321,7 @@
     color: #007ea7;
   }
 
-  #searchForm {
+  .search-form {
     margin-top: 20px;
     display: flex;
     gap: 10px;
@@ -348,7 +357,7 @@
   }
 }
 
-#searchCards {
+.search-cards {
   min-width: 100%;
   max-height: 45vh;
   min-height: 0;

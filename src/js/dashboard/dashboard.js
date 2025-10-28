@@ -1,10 +1,10 @@
-import customFetch from "../tokens/refreshToken.js";
+import customFetch from "../fetch/customFetch.js";
 import showToast from "../toasts/toastOperation.js";
 
 window.fetch = customFetch;
 
-const USER_API_KEY = "http://localhost:3000/user/auth/fetch";
-const API_KEY = "http://localhost:3000/tasks";
+const PROFILE_BASE_URL = "http://localhost:3000/profile";
+const BASE_URL = "http://localhost:3000/tasks";
 
 if (
   localStorage.getItem("refresh_token") === "undefined" ||
@@ -16,12 +16,14 @@ if (
   let user;
 
   try {
-    user = await fetch(USER_API_KEY, {
+    const response = await fetch(PROFILE_BASE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
     });
+    user = response.user;
+    console.log(user);
   } catch (err) {
     console.log(err);
   }
@@ -29,6 +31,7 @@ if (
   const username = document.getElementById("user");
   const email = document.getElementById("email");
   const createdAt = document.getElementById("createdAt");
+  const profileImage = document.querySelector(".profile-image");
   const logOut = document.querySelector(".logout");
 
   const timeStr = user.createdAt;
@@ -38,6 +41,11 @@ if (
   username.innerHTML = `${user.username} <i class="fa-solid fa-circle-check"></i>`;
   email.innerHTML = `<i class="fa-solid fa-envelope" style="color: rgb(200, 3, 3)"></i> ${user.email}`;
   createdAt.innerHTML = `<i class="fa-solid fa-calendar"></i> ${date[2]}/${date[1]}/${date[0]}`;
+  profileImage.setAttribute(
+    "src",
+    user.profile ||
+      "https://static.vecteezy.com/system/resources/previews/065/959/781/non_2x/simple-dark-blue-user-profile-icon-person-symbol-free-vector.jpg"
+  );
 
   logOut.addEventListener("click", (event) => {
     localStorage.clear();
@@ -46,7 +54,7 @@ if (
 
   async function getAllData() {
     try {
-      let tasks = await fetch(`${API_KEY}/fetch`, {
+      let tasks = await fetch(`${BASE_URL}/fetch`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +96,7 @@ if (
     };
 
     try {
-      const message = await fetch(`${API_KEY}/save`, {
+      const message = await fetch(`${BASE_URL}/save`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,8 +112,7 @@ if (
   });
 
   function cardsReload() {
-    const children = cardsSection.querySelectorAll("*");
-    children.forEach((child) => child.remove());
+    cardsSection.innerHTML = "";
     showCards();
   }
 
@@ -217,6 +224,8 @@ if (
     }
 
     checkBox.addEventListener("change", async (e) => {
+      const taskInfo = document.querySelector(".task-info");
+
       let targetEditId = e.target.id;
 
       const editData = {
@@ -225,7 +234,7 @@ if (
       };
 
       try {
-        const message = await fetch(`${API_KEY}/edit`, {
+        const message = await fetch(`${BASE_URL}/edit`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -245,6 +254,8 @@ if (
       } else {
         label.textContent = "Mark as Completed";
       }
+
+      cardsReload();
     });
     checkTask.appendChild(checkBox);
     checkTask.appendChild(label);
@@ -274,7 +285,7 @@ if (
       const id = e.target.id;
 
       try {
-        const message = await fetch(`${API_KEY}/delete/${id}`, {
+        const message = await fetch(`${BASE_URL}/delete/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -321,7 +332,7 @@ if (
       };
 
       try {
-        const message = await fetch(`${API_KEY}/edit`, {
+        const message = await fetch(`${BASE_URL}/edit`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -335,6 +346,7 @@ if (
       }
 
       cardsReload();
+      searchCardsSection.innerHTML = "";
     });
 
     // Adding todo components to card
@@ -384,7 +396,7 @@ if (
 
   clearAllButton.addEventListener("click", async () => {
     try {
-      const message = await fetch(`${API_KEY}/clear`, {
+      const message = await fetch(`${BASE_URL}/clear`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -415,7 +427,7 @@ if (
 
     try {
       const searchTasks = await fetch(
-        `${API_KEY}/search?title=${searchTitle}&tag=${searchTag}`,
+        `${BASE_URL}/search?title=${searchTitle}&tag=${searchTag}`,
         {
           method: "GET",
           headers: {
@@ -423,7 +435,6 @@ if (
           },
         }
       );
-      console.log(typeof searchTasks);
 
       searchTasks.forEach((task) => {
         searchCardsSection.appendChild(createCard(task));

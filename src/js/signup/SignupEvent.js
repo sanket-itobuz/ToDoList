@@ -1,7 +1,7 @@
 import showToast from "../toasts/toastOperation.js";
 import signupSelectors from "./signupSelectors.js";
 
-const API_KEY = "http://localhost:3000/user/auth";
+const BASE_URL = "http://localhost:3000/user/auth";
 
 const otpButton = signupSelectors.otpButton;
 const otpField = signupSelectors.otpField;
@@ -17,7 +17,7 @@ class SignupEvent {
     const password = passwordData.value;
 
     try {
-      const response1 = await fetch(`${API_KEY}/signup`, {
+      const response1 = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +32,7 @@ class SignupEvent {
 
     // send otp to the registered email
     try {
-      const response2 = await fetch(`${API_KEY}/otp`, {
+      const response2 = await fetch(`${BASE_URL}/otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ class SignupEvent {
     };
 
     try {
-      const response = await fetch(`${API_KEY}/signup`, {
+      const response = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,13 +80,7 @@ class SignupEvent {
       });
 
       const user = await response.json();
-      showToast(user);
-
-      if (user.success) {
-        setTimeout(() => {
-          window.location.href = "http://localhost:8080/pages/login.html";
-        }, 3000);
-      }
+      showToast(user, `http://localhost:8080/pages/login.html`);
     } catch (err) {
       console.log(err);
     }

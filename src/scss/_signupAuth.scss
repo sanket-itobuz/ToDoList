@@ -4,3 +4,12 @@
 .signup-button {
   display: none;
 }
+
+@media (max-width: 450px) {
+  .info {
+    height: auto;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+}

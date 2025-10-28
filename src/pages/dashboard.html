@@ -16,9 +16,6 @@
       href="../assets/icon/sticky-note.png"
       type="image/x-icon"
     />
-    <script type="module" src="../js/main.js"></script>
-    <script type="module" src="../js/dashboard/dashboard.js"></script>
-    <script type="module" src="../js/profile_image/profile.js"></script>
   </head>
   <body>
     <div class="container py-4 px-3 mx-auto">
@@ -33,7 +30,7 @@
 
       <section class="user-details">
         <div class="card">
-          <h5 class="card-header" id="user"></h5>
+          <h5 class="card-header" id="user" class="user-name"></h5>
           <div class="card-body user">
             <div class="user-info">
               <p class="card-text" id="email"></p>
@@ -48,14 +45,9 @@
               </button>
             </div>
             <div class="user-profile">
-              <img src="" alt="" />
-              <form
-                action=""
-                method="post"
-                enctype="multipart/form-data"
-                id="editImage"
-              >
-                <input type="file" name="file" id="fileInput" />
+              <img src="#" class="profile-image" />
+              <form method="post" enctype="multipart/form-data" id="editImage">
+                <input type="file" name="file" id="fileInput" class="hidden" />
                 <button class="btn" type="submit">
                   Upload Picture<i
                     class="fa-solid fa-arrow-up-from-bracket icon-left"
@@ -123,7 +115,7 @@
       <br />
 
       <section class="task-heading">
-        <h3>Your Tasks..</h3>
+        <h3>Your Tasks</h3>
         <section class="task-info">
           <p id="totalTasks" class="task-no">Total :</p>
           <p id="completedTask" class="task-no">Completed :</p>
@@ -135,63 +127,11 @@
         </button>
       </section>
 
-      <section id="toDoTasks">
-        <!--Task cards to feature all tasks-->
-        <!-- <div class="card task-card">
-          <div class="card-header task-importance"></div>
-          <div class="card-body task-details">
-            <h5 class="card-title task-name">{Task Title}</h5>
-            <p class="card-text task-description">{Task Description}</p>
-            <div class="tags">
-              <div class="tag">tag1</div>
-              <div class="tag">tag2</div>
-              <div class="tag">tag3</div>
-              <div class="tag">tag4</div>
-            </div>
-            <div class="task-creation-date">Date Created On: 0/0/00</div>
-            <div class="task-creation-date">Last Updated At: 0/0/00</div>
-            <div class="checkbox">
-              <input
-                type="checkbox"
-                id="important-checkbox"
-                class="form-check-input"
-                name="important-checkbox"
-              />
-              <label class="form-check-label important-checkbox-label"
-                >Mark as Completed</label
-              >
-            </div>
-            <button type="button" class="btn btn-primary edit-button">
-              <i class="fa-solid fa-pen icon-right"></i>Edit
-            </button>
-
-            <button type="submit" class="btn btn-danger delete-button">
-              <i class="fa-solid fa-trash-can icon-right"></i>Delete
-            </button>
-            <input
-              type="text"
-              placeholder="Enter new Title"
-              class="form-control edit-title-field"
-            />
-            <input
-              type="text"
-              placeholder="Enter new Description"
-              class="form-control edit-description-field"
-              max="50"
-            />
-            <button
-              type="button"
-              class="btn btn-primary save-edit-button w-100"
-            >
-              Save Changes
-            </button>
-          </div>
-        </div> -->
-      </section>
+      <section id="toDoTasks" class="to-do-tasks"></section>
 
       <section class="search-tasks">
         <h3>Search your Tasks</h3>
-        <form action="#" id="searchForm">
+        <form action="#" id="searchForm" class="search-form">
           <div class="mb-3 task-search-part">
             <input
               type="text"
@@ -214,8 +154,12 @@
           </button>
         </form>
 
-        <div id="searchCards"></div>
+        <div id="searchCards" class="search-cards"></div>
       </section>
     </div>
+
+    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/dashboard/dashboard.js"></script>
+    <script type="module" src="../js/profile_image/profile.js"></script>
   </body>
 </html>

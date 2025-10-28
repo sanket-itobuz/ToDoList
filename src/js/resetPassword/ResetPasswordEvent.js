@@ -1,17 +1,11 @@
 import showToast from "../toasts/toastOperation.js";
 import resetPasswordSelectors from "./resetPasswordSelectors.js";
 
-const API_KEY = "http://localhost:3000/user/auth";
-
-const otpButton = resetPasswordSelectors.otpButton;
-const emailData = resetPasswordSelectors.emailData;
-const otpField = resetPasswordSelectors.otpField;
-const resetPasswordField = resetPasswordSelectors.resetPasswordField;
-const resetButton = resetPasswordSelectors.resetButton;
+const BASE_URL = "http://localhost:3000/user/auth";
 
 class ResetPasswordEvent {
   getOtp = async (event) => {
-    const email = emailData.value;
+    const email = resetPasswordSelectors.emailData.value;
     console.log(email);
 
     if (!email) {
@@ -20,7 +14,7 @@ class ResetPasswordEvent {
     }
 
     try {
-      const response = await fetch(`${API_KEY}/otp`, {
+      const response = await fetch(`${BASE_URL}/otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,10 +27,11 @@ class ResetPasswordEvent {
       if (!message.success) {
         return;
       }
-      otpField.style.display = "block";
-      resetPasswordField.style.display = "block";
-      otpButton.style.display = "none";
-      resetButton.style.display = "block";
+
+      resetPasswordSelectors.otpField.style.display = "block";
+      resetPasswordSelectors.resetPasswordField.style.display = "block";
+      resetPasswordSelectors.otpButton.style.display = "none";
+      resetPasswordSelectors.resetButton.style.display = "block";
     } catch (err) {
       showToast({ message: "Something Went Wrong", success: false });
     }
@@ -57,7 +52,7 @@ class ResetPasswordEvent {
     };
 
     try {
-      const response = await fetch(`${API_KEY}/reset`, {
+      const response = await fetch(`${BASE_URL}/reset`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,13 +61,7 @@ class ResetPasswordEvent {
       });
 
       const message = await response.json();
-      showToast(message);
-
-      if (message.success) {
-        setTimeout(() => {
-          window.location.href = "http://localhost:8080/pages/login.html";
-        }, 3000);
-      }
+      showToast(message, "http://localhost:8080/pages/login.html");
     } catch (err) {
       console.log(err);
       showToast({ message: "Something Went Wrong", success: false });

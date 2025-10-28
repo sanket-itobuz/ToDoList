@@ -1,6 +1,6 @@
 import showToast from "../toasts/toastOperation.js";
 
-const API_KEY = "http://localhost:3000/user/auth";
+const BASE_URL = "http://localhost:3000/user/auth";
 
 class LoginEvent {
   userLogin = async (event) => {
@@ -11,13 +11,16 @@ class LoginEvent {
     const email = loginFormData.get("email");
     const password = loginFormData.get("password");
 
+    console.log(email);
+    console.log(password);
+
     const userData = {
       email,
       password,
     };
 
     try {
-      const response = await fetch(`${API_KEY}/login`, {
+      const response = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,16 +31,10 @@ class LoginEvent {
       const user = await response.json();
       console.log(user);
 
-      showToast(user);
-
       localStorage.setItem("access_token", user.accessToken);
       localStorage.setItem("refresh_token", user.refreshToken);
 
-      if (user.success) {
-        setTimeout(() => {
-          window.location.href = "http://localhost:8080/pages/dashboard.html";
-        }, 3000);
-      }
+      showToast(user, "http://localhost:8080/pages/dashboard.html");
     } catch (err) {
       console.log(err);
     }

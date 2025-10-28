@@ -2,6 +2,45 @@
   margin-bottom: 50px;
   margin-top: 20px;
 }
+
+.user-profile {
+  width: 100%;
+}
+.user-info {
+  width: 100%;
+}
+
+@media (max-width: 1000px) {
+  .user {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .user-info {
+    margin-top: 30px;
+    width: 80%;
+  }
+  .user-profile {
+    width: 80%;
+  }
+}
+
+@media (max-width: 400px) {
+  .user {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .user-info {
+    margin-top: 30px;
+    width: 100%;
+  }
+  .user-profile {
+    width: 100%;
+  }
+  .user-name {
+    font-size: 25px;
+  }
+}
+
 .card-text {
   font-size: 2opx;
 }
@@ -21,13 +60,41 @@
 
     img {
       display: block;
-      border: 2px solid black;
       height: 150px;
       width: 150px;
       border-radius: 50%;
+      background: none;
+      padding: 0;
+      border: 2px solid #003249;
+    }
+
+    img:hover {
+      border: none;
+      box-shadow: 5px 5px 5px #003249;
+    }
+
+    form {
+      width: 100%;
+      input[type="file"]::file-selector-button {
+        border: 2px solid #003249;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background-color: #003249;
+        color: #ccdbdc;
+      }
+
+      input[type="file"]::-webkit-file-upload-button:hover {
+        background: transparent;
+        border: 2px solid #003249;
+        cursor: pointer;
+        color: #003249;
+      }
     }
     button {
       display: block;
+    }
+    button:hover {
+      cursor: pointer;
     }
 
     @media (max-width: 770px) {

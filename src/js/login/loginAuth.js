@@ -1,7 +1,6 @@
 import loginSelectors from "./loginSelectors.js";
-import LoginEvent from "./loginEvent.js";
+import LoginEvent from "./LoginEvent.js";
 
-const loginForm = loginSelectors.loginForm;
 const login = new LoginEvent();
 
-loginForm.addEventListener("submit", login.userLogin);
+loginSelectors.loginForm.addEventListener("submit", login.userLogin);
